@@ -11,10 +11,13 @@ SOURCES += \
     ../src/CompleteProcess.cpp \
     ../src/BaseProcess.cpp \
     ../src/simulator.cpp \
-    ../src/finaltimes.cpp
+    ../src/finaltimes.cpp \
+    ../src/basealgorithm.cpp
 
 HEADERS += \
     ../include/serverSock.h \
+    ../include/basealgorithm.h \
+    ../include/iqueue.h \
     ../include/psjf.h \
     ../include/processGenerator.h \
     ../include/priorityQueue.h \
