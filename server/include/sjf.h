@@ -1,8 +1,8 @@
 /**
  * @file sjf.h
- * @brief Declaración de la clase SJF.
- * @author Ronald Sulbaran. ronalanto03@gmail.com.
- * @date 01-06-2013
+ * @brief class SJF.
+ * @author Ronald Sulbaran and Julio Jaimes R. ronalanto03@gmail.com, carlosjuliojr@hotmail.com.
+ * @date 07-10-2016
  */
 
 
@@ -22,149 +22,36 @@
 #include<vector>
 #include<finaltimes.h>
 #include<finalsocket.h>
+#include<basealgorithm.h>
 
 
 /**
  * @class SJF
- * @brief Clase para hacer la simulacion del algoritmo SJF,
- * escribe en un archivo los resultados de la simulacion.
+ * @brief Class for to do the simulation SJF's algorithm.
+ * @details This class inherit of the class BaseAlgorithm.
  */
 
 
-class SJF{
+class SJF : public BaseAlgorithm{
    private:
 
-      /**
-       * @struct CmpLessB
-       * @brief Estructura para hacer la comparacion de menor que en la Cola de bloqueado.
-       */
-      struct CmpLessB
-      {
-            bool operator () (CompleteProcess & __x , CompleteProcess & __y) const
-            {
-               return __x.getBlockingTime() < __y.getBlockingTime();
-            }
-      };
 
+      PriorityQueue<CompleteProcess,CmpLessB,BaseAlgorithm::CmpGreaterOrEqualB> priorityQueue;/**< Cola de procesos bloqueados*/
 
-      /**
-       * @struct CmpGreaterOrEqualB
-       * @brief Estructura para hacer la comparacion de mayor o igual que en la Cola de bloqueado.
-       */
-      struct CmpGreaterOrEqualB
-      {
-            bool operator () (CompleteProcess & __x,  CompleteProcess & __y) const
-            {
-               return __x.getBlockingTime() >= __y.getBlockingTime();
-            }
-      };
+      PriorityQueue<CompleteProcess,BaseAlgorithm::CmpLessR,BaseAlgorithm::CmpGreaterOrEqualR> readyQueue;/**< Cola de listo para ejecutarse*/
 
-
-      /**
-       * @struct CmpLessR
-       * @brief Estructura para hacer la comparacion de menor que en la Cola de listo.
-       */
-      struct CmpLessR
-      {
-            bool operator () (CompleteProcess & __x , CompleteProcess & __y) const
-            {
-               return __x.getCpuBurstTime() < __y.getCpuBurstTime();
-            }
-      };
-
-
-      /**
-       * @struct CmpGreaterOrEqualR
-       * @brief Estructura para hacer la comparacion de mayor o igual que en la Cola de listo.
-       */
-      struct CmpGreaterOrEqualR
-      {
-            bool operator () (CompleteProcess & __x,  CompleteProcess & __y) const
-            {
-               return __x.getCpuBurstTime() >= __y.getCpuBurstTime();
-            }
-      };
-
-
-
-      PriorityQueue<CompleteProcess,CmpLessB,CmpGreaterOrEqualB> priorityQueue;/**< Cola de procesos bloqueados*/
-
-      PriorityQueue<CompleteProcess,CmpLessR,CmpGreaterOrEqualR> readyQueue;/**< Cola de listo para ejecutarse*/
-
-
-      int n;/**< Numero de procesos*/
-
-      BaseProcess * baseProcesses;/**< Procesos que llegaran a CPU*/
-
-      std::ofstream out;
-
-      struct EventData eventData;/**< Donde se almacenara la informacion para enviar al socket*/
-
-      int t;/**< Socket al que se envian los datos*/
-
-      bool connected;/**< para saber si el cleinte aun esta conectado*/
-
+   //  std::ofstream out;
 
    public:
 
-      SJF(BaseProcess * _baseProcesses,int _n,int _t):
-         n(_n),
-         baseProcesses(_baseProcesses),
-         t(_t),
-         connected(true)
+      SJF( const BaseProcess * _baseProcesses,const int _n, const int _t): BaseAlgorithm(_baseProcesses,_n,_t)
+
       {
       }
 
 
 
-      /**
-       * Escribe en el socket los eventos procesados
-       * @param time tiempo en el que ocurre el evento
-       * @param event tipo de evemto
-       * @param p proceso asociado al evento ocurrido
-       */
-      void writeEventInfo(double time, int event, CompleteProcess p,SharedSimulation & _ss)
-      {
-         eventData.time=time;
-         eventData.pid=p.getPid();
-         eventData.durationTime=p.getDurationTime();
-         eventData.event=event;
-         eventData.arrTime=p.getArrTime();
-         eventData.remainingTime=p.getRemainingTime();
-         eventData.waitingTime=p.getWaitingTime();
-         eventData.cpuBurstTime=p.getCpuBurstTime();
-         eventData.blockingTime=p.getBlockingTime();
-         eventData.usedTime=p.getAverageUsageTime();
-         eventData.nB=p.getNB();
-         eventData.nT=p.getNRunsCPU();
-         eventData.allBlockingTime=p.getAverageIoTime();
 
-
-         //            std::cout<<"time: "<<eventData.time<<std::endl;
-         //            std::cout<<"pid: "<<eventData.pid<<std::endl;
-         //            std::cout<<"duration :"<<eventData.durationTime<<std::endl;
-         //            std::cout<<"event: "<<eventData.event<<std::endl;
-         //            std::cout<<"arrtime: "<<eventData.arrTime<<std::endl;
-         //            std::cout<<"remainingTime: "<<eventData.remainingTime<<std::endl;
-         //            std::cout<<"waitingTime :"<<eventData.waitingTime<<std::endl;
-         //            std::cout<<"cpuBurstTime"<<eventData.cpuBurstTime<<std::endl;
-         //            std::cout<<"blockingTime"<<eventData.blockingTime<<std::endl;
-
-
-         (void)write(t, (char *)(&eventData), sizeof(struct EventData));
-         (void)read(t, (char *)(&eventData), sizeof(struct EventData));
-
-         //std::cout<<"Lectura en SJF, event= "<<eventData.event<<std::endl;
-
-
-         // std::cout<<std::endl;
-
-         if(eventData.event==-1){
-            connected=false;
-            _ss.connected=false;
-         }
-
-      }
 
 
 
@@ -200,7 +87,7 @@ class SJF{
 
          bool equalMaximum=true;
 
-         CompleteProcess cpuP(baseProcesses[0]);//representa al proceso que esta actualmente ejecutandose
+         CompleteProcess cpuP(BaseAlgorithm::baseProcesses[0]);//representa al proceso que esta actualmente ejecutandose
 
          double averageIoTime=0.0;//tiempo de bloquedo promedio(IO)
 
@@ -217,7 +104,7 @@ class SJF{
 
 
          while(connected and
-               ( processIndex<n or
+               ( processIndex<numOfProcesses or
                  not(priorityQueue.is_empty()) or
                  not(readyQueue.is_empty()) or
                  cpuP.getPid()!=-1))
@@ -268,7 +155,7 @@ class SJF{
                   }
                }
 
-               if(processIndex<n and
+               if(processIndex<numOfProcesses and
                      (((baseProcesses[processIndex].getArrTime()-simulationTime)<=eventToProcessTime)))
                {
                   eventToProcess=1;
@@ -423,10 +310,10 @@ class SJF{
          {
             FinalSocket fS;
             eventData.event=6;
-            (void)write(t, (char *)(&eventData), sizeof(struct EventData));
+            (void)write(nSocket, (char *)(&eventData), sizeof(struct EventData));
 
-            fS.averageUsedTime=averageUsageTime/n;
-            fS.averageWaitingTime=averageWaitingTime/n;
+            fS.averageUsedTime=averageUsageTime/numOfProcesses;
+            fS.averageWaitingTime=averageWaitingTime/numOfProcesses;
 
 
             fS.sDUsedTime=0;//donde se almacenara la desviacion de tiempo de uso
@@ -438,9 +325,9 @@ class SJF{
             fS.minWaitingTime=_ss.results[1][0].averageWaitingTime;//minWaitingTime
             fS.maxTurnAround=_ss.results[1][0].turnAround;
             fS.minTurnAround=_ss.results[1][0].turnAround;
-            fS.turnAround=turnAround/n;
+            fS.turnAround=turnAround/numOfProcesses;
 
-            for (i=0; i<n; i++)
+            for (int i=0; i<numOfProcesses; i++)
             {
 
                if(_ss.results[1][i].averageUsedTime>fS.maxUsedTime)//busca el maximo
@@ -472,16 +359,16 @@ class SJF{
             _ss.maxTimes[1]=FinalTimes(fS.maxUsedTime,fS.maxWaitingTime,fS.maxTurnAround);
 
 
-            fS.sDUsedTime= sqrt(fS.sDUsedTime/n);
-            fS.sDWaitingTime= sqrt(fS.sDWaitingTime/n);
-            fS.sDTurnAround=sqrt(fS.sDTurnAround/n);
+            fS.sDUsedTime= sqrt(fS.sDUsedTime/numOfProcesses);
+            fS.sDWaitingTime= sqrt(fS.sDWaitingTime/numOfProcesses);
+            fS.sDTurnAround=sqrt(fS.sDTurnAround/numOfProcesses);
 
             fS.inCPU=inCpu;
             fS.inIO=inIO;
-            fS.throughPut=n/simulationTime;
+            fS.throughPut=numOfProcesses/simulationTime;
             fS.simulationTime=simulationTime;
             fS.cpuUtil=percentage/simulationTime;
-            fS.IOAvgTime=averageIoTime/n;
+            fS.IOAvgTime=averageIoTime/numOfProcesses;
 
 
 
@@ -498,7 +385,7 @@ class SJF{
             //                std::cout<<"tiempo de espera Min: "<<fS.minWaitingTime;//minWaitingTime
 
 
-            (void)write(t, (char *)(&fS), sizeof(struct FinalSocket));
+            (void)write(nSocket, (char *)(&fS), sizeof(struct FinalSocket));
             _ss.multiple_fin[1]=true;
 
          }
@@ -515,7 +402,7 @@ class SJF{
 
       ~SJF()
       {
-         out.close();
+     //    out.close();
       }
 
 };

@@ -4,14 +4,19 @@
 #include<CompleteProcess.h>
 #include<eventData.h>
 #include<finalsocket.h>
+#include<priorityQueue.h>
+#include<fifoQueue.h>
+#include <unistd.h>
+#include<fstream>
 
 class BaseAlgorithm
 {
+
 protected:
 
     /**
      * @struct CmpLessB
-     * @brief Estructura para hacer la comparacion de menor que en la Cola de bloqueado.
+     * @brief Structs for to do the comparision of less in the blocking's queue.
      */
     struct CmpLessB
     {
@@ -24,7 +29,7 @@ protected:
 
     /**
      * @struct CmpGreaterOrEqualB
-     * @brief Estructura para hacer la comparacion de mayor o igual que en la Cola de bloqueado.
+     * @brief Structs for to do the comparision of major in the blocking's queue.
      */
     struct CmpGreaterOrEqualB
     {
@@ -37,7 +42,7 @@ protected:
 
     /**
      * @struct CmpLessR
-     * @brief Estructura para hacer la comparacion de menor que en la Cola de listo.
+     * @brief Structs for to do the comparision of less in the ready's queue.
      */
     struct CmpLessR
     {
@@ -50,7 +55,7 @@ protected:
 
     /**
      * @struct CmpGreaterOrEqualR
-     * @brief Estructura para hacer la comparacion de mayor o igual que en la Cola de listo.
+     * @brief Structs for to do the comparision of major in the ready's queue.
      */
     struct CmpGreaterOrEqualR
     {
@@ -60,13 +65,13 @@ protected:
           }
     };
 
-    IQueue* priorityBlockQueue;
+    IQueue<CompleteProcess>* priorityQueue;
 
-    IQueue* readyQueue;
+    IQueue<CompleteProcess>* readyQueue1;
 
     int numOfProcesses;
 
-    BaseProcess* baseProcess;
+    BaseProcess* baseProcesses;
 
     struct EventData eventData;
 
@@ -75,15 +80,22 @@ protected:
     bool connected;
 
 
-
-
 public:
     BaseAlgorithm();
 
-    BaseAlgorithm(IQueue & _priorityBlockQueue, IQueue& _readyQueue,\
-                  int _numOfProcesses, BaseProcess & _baseProcess, struct EventData _eventData,int _nSocket,bool _connected);
+    BaseAlgorithm(
+                  const  BaseProcess * _baseProcesses,
+                  const int _numOfProcesses,
+                  const int _nSocket
+                  );
+    /**
+     * Writes in the Socket the events process.
+     * @param time. It is the time when the event occurs
+     * @param event Type of Event
+     * @param p process associated with the event occurred
+     */
 
-    void writeEventInfo(double time, int event,const CompleteProcess p,SharedSimulation & _ss);
+    void writeEventInfo(const double time,const int event,const CompleteProcess p,SharedSimulation & _ss);
 
 
 };
