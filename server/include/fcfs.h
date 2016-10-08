@@ -20,115 +20,28 @@
 #include<finaltimes.h>
 #include<finalsocket.h>
 #include <unistd.h>
+#include<basealgorithm.h>
 
 /**
  * @class FCFS
  * @brief Clase para hacer la simulacion del algoritmo FCFS,
  * escribe en un archivo los resultados de la simulacion.
  */
-class FCFS
+class FCFS: public BaseAlgorithm
 {
    private:
 
-      /**
-       * @struct CmpLess
-       * @brief Estructura para hacer la comparacion de menor que en la Cola de prioridad,
-       * (en este caso cola de procesos bloqueados).
-       */
-      struct CmpLess
-      {
-            bool operator () (CompleteProcess & __x , CompleteProcess & __y) const
-            {
-               return __x.getBlockingTime() < __y.getBlockingTime();
-            }
-      };
 
-
-      /**
-       * @struct CmpGreaterOrEqual
-       * @brief Estructura para hacer la comparacion de mayor o igual que en la Cola de prioridad,
-       * (en este caso cola de procesos bloqueados).
-       */
-      struct CmpGreaterOrEqual
-      {
-            bool operator () (CompleteProcess & __x,  CompleteProcess & __y) const
-            {
-               return __x.getBlockingTime() >= __y.getBlockingTime();
-            }
-
-
-      };
-
-
-      PriorityQueue<CompleteProcess,CmpLess,CmpGreaterOrEqual> priorityQueue;/**< Cola de procesos bloqueados*/
+      PriorityQueue<CompleteProcess,CmpLessB,CmpGreaterOrEqualB> priorityQueue;/**< Cola de procesos bloqueados*/
 
       FifoQueue<CompleteProcess> fifoQueue;/**< Cola de listo para ejecutarse*/
-
-      int numOfProcs;/**< Numero de procesos*/
-
-      BaseProcess * baseProcesses;/**< Procesos que llegaran a CPU*/
-
-      struct EventData eventData;/**< Donde se almacenara la informacion para enviar al socket*/
-
-      int nSocket;/**< Socket al que se envian los datos*/
-
-      bool connected;/**< para saber si el cliente aun esta conectado*/
 
 
    public:
 
-      FCFS(BaseProcess * _baseProcesses,int _n,int _t):
-         numOfProcs(_n),
-         baseProcesses(_baseProcesses),
-         nSocket(_t),
-         connected(true)
+      FCFS(BaseProcess * _baseProcesses,int _n,int _t): BaseAlgorithm(_baseProcesses,_n,_t)
       {
       }
-
-      /**
-         * Escribe en el socket los eventos procesados
-         * @param time tiempo en el que ocurre el evento
-         * @param event tipo de evemto
-         * @param p proceso asociado al evento ocurrido
-         */
-      void writeEventInfo(double time, int event, CompleteProcess p, SharedSimulation & _ss)
-      {
-         eventData.time =  time;
-         eventData.pid =  p.getPid();
-         eventData.durationTime = p.getDurationTime();
-         eventData.event = event;
-         eventData.arrTime = p.getArrTime();
-         eventData.remainingTime = p.getRemainingTime();
-         eventData.waitingTime = p.getWaitingTime();
-         eventData.cpuBurstTime = p.getCpuBurstTime();
-         eventData.blockingTime = p.getBlockingTime();
-         eventData.usedTime = p.getAverageUsageTime();
-         eventData.nB = p.getNB();
-         eventData.nT = p.getNRunsCPU();
-         eventData.allBlockingTime = p.getAverageIoTime();
-
-         //            std::cout<<"time: "<<eventData.time<<std::endl;
-         //            std::cout<<"pid: "<<eventData.pid<<std::endl;
-         //            std::cout<<"duration :"<<eventData.durationTime<<std::endl;
-         //            std::cout<<"event: "<<eventData.event<<std::endl;
-         //            std::cout<<"arrtime: "<<eventData.arrTime<<std::endl;
-         //            std::cout<<"remainingTime: "<<eventData.remainingTime<<std::endl;
-         //            std::cout<<"waitingTime :"<<eventData.waitingTime<<std::endl;
-         //            std::cout<<"cpuBurstTime"<<eventData.cpuBurstTime<<std::endl;
-         //            std::cout<<"blockingTime"<<eventData.blockingTime<<std::endl;
-
-
-         (void)write(nSocket, (char *)(&eventData), sizeof(struct EventData));
-
-         (void)read(nSocket, (char *)(&eventData), sizeof(struct EventData));
-
-         if(eventData.event==-1)
-         {
-            connected=false;
-            _ss.connected=false;
-         }
-      }
-
 
       /**
          * Hace la simulacion del algoritmo
@@ -184,7 +97,7 @@ class FCFS
 
 
          while(connected and
-               (processIndex < numOfProcs
+               (processIndex < numOfProcesses
                 or not(priorityQueue.is_empty())
                 or not(fifoQueue.is_empty())
                 or  cpuP.getPid()!=-1))
@@ -230,7 +143,7 @@ class FCFS
                }
 
                if((((baseProcesses[processIndex].getArrTime() - simulationTime) <=  eventToProcessTime)
-                   or eventToProcessTime == -1) and processIndex < numOfProcs)
+                   or eventToProcessTime == -1) and processIndex < numOfProcesses)
                {
                   eventToProcess = 1;
                   eventToProcessTime = baseProcesses[processIndex].getArrTime() - simulationTime;
@@ -382,8 +295,8 @@ class FCFS
             eventData.event = 6;
             (void)write(nSocket, (char *)(&eventData), sizeof(struct EventData));
 
-            fS.averageUsedTime = averageUsageTime/numOfProcs;
-            fS.averageWaitingTime = averageWaitingTime/numOfProcs;
+            fS.averageUsedTime = averageUsageTime/numOfProcesses;
+            fS.averageWaitingTime = averageWaitingTime/numOfProcesses;
             fS.sDUsedTime = 0;//donde se almacenara la desviacion de tiempo de uso
             fS.sDWaitingTime = 0;//donde se almacenara la desviacion de tiempo de espera
             fS.sDTurnAround = 0;
@@ -393,9 +306,9 @@ class FCFS
             fS.minWaitingTime =_ss.results[0][0].averageWaitingTime;//minWaitingTime
             fS.maxTurnAround =_ss.results[0][0].turnAround;
             fS.minTurnAround =_ss.results[0][0].turnAround;
-            fS.turnAround = turnAround/numOfProcs;
+            fS.turnAround = turnAround/numOfProcesses;
 
-            for ( i = 0; i < numOfProcs; i++)
+            for (int i = 0; i < numOfProcesses; i++)
             {
                if(_ss.results[0][i].averageUsedTime>fS.maxUsedTime)//busca el maximo
                {
@@ -435,16 +348,16 @@ class FCFS
             _ss.minTimes[0] = FinalTimes(fS.minUsedTime, fS.minWaitingTime, fS.minTurnAround);
 
             _ss.maxTimes[0] = FinalTimes(fS.maxUsedTime, fS.maxWaitingTime, fS.maxTurnAround);
-            fS.sDUsedTime = sqrt(fS.sDUsedTime/numOfProcs);
-            fS.sDWaitingTime = sqrt(fS.sDWaitingTime/numOfProcs);
-            fS.sDTurnAround = sqrt(fS.sDTurnAround/numOfProcs);
+            fS.sDUsedTime = sqrt(fS.sDUsedTime/numOfProcesses);
+            fS.sDWaitingTime = sqrt(fS.sDWaitingTime/numOfProcesses);
+            fS.sDTurnAround = sqrt(fS.sDTurnAround/numOfProcesses);
 
             fS.inCPU = inCpu;
             fS.inIO = inIO;
-            fS.throughPut = numOfProcs/simulationTime;
+            fS.throughPut = numOfProcesses/simulationTime;
             fS.simulationTime = simulationTime;
             fS.cpuUtil = percentage/simulationTime;
-            fS.IOAvgTime = averageIoTime/numOfProcs;
+            fS.IOAvgTime = averageIoTime/numOfProcesses;
 
             (void)write(nSocket, (char *)(&fS), sizeof(struct FinalSocket));
 
