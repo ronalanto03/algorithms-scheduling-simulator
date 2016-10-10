@@ -62,7 +62,7 @@ class PSJF: public BaseAlgorithm
 
          unsigned i=0;
 
-         int processIndex=0;///indica cual es el proximo proceso que llega
+         size_t processIndex=0;///indica cual es el proximo proceso que llega
 
          double simulationTime=0.0;///tiempo de simulacion
 
@@ -330,7 +330,8 @@ class PSJF: public BaseAlgorithm
          {
             FinalSocket fS;
             eventData.event=6;
-            (void)write(nSocket, (char *)(&eventData), sizeof(struct EventData));
+            int tmpRevVal = write(nSocket, (char *)(&eventData), sizeof(struct EventData));
+            (void)tmpRevVal;
 
             fS.averageUsedTime=averageUsageTime/numOfProcesses;
             fS.averageWaitingTime=averageWaitingTime/numOfProcesses;
@@ -406,7 +407,8 @@ class PSJF: public BaseAlgorithm
             //                std::cout<<"tiempo de espera Min: "<<fS.minWaitingTime;//minWaitingTime
 
 
-            (void)write(nSocket, (char *)(&fS), sizeof(struct FinalSocket));
+            tmpRevVal = write(nSocket, (char *)(&fS), sizeof(struct FinalSocket));
+            (void)tmpRevVal;
 
             _ss.multiple_fin[2]=true;
 

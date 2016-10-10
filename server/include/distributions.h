@@ -18,64 +18,67 @@
 
 class Distribution
 {
-	private:
+   private:
 
 
-        std::default_random_engine generator;/**< Motor de números aleatorios que genera números pseudo-aleatorios*/
+      std::default_random_engine generator;/**< Motor de números aleatorios que genera números pseudo-aleatorios*/
 
-		double  lamda;/**< Parametro lamda de la distribucion exponencial*/
+      double  lamda;/**< Parametro lamda de la distribucion exponencial*/
 
+      std::uniform_real_distribution<double> * distribution_u;/**< Distribución de números aleatorios que produce valores de punto flotante de acuerdo con una distribución uniforme*/
 
-		std::uniform_real_distribution<double> * distribution_u;/**< Distribución de números aleatorios que produce valores de punto flotante de acuerdo con una distribución uniforme*/
-
-
-		std::normal_distribution<double> * distribution_n;/**< Distribución de números aleatorios que produce valores de punto flotante de acuerdo con una distribución normal*/
-
-	public:
-
-		enum Type{
-			constant,uniform,exponential,normal
-		};
-
-		enum Type t;
+      std::normal_distribution<double> * distribution_n;/**< Distribución de números aleatorios que produce valores de punto flotante de acuerdo con una distribución normal*/
 
 
-        /**
-         * @brief Constructor parametrico
-         * @param _t tipo de generador
-         * @param _t a usado de diferentes formas dependiendo del tipo de distribucion
-         * @param _t b usado de diferentes formas dependiendo del tipo de distribucion
-         */
-        Distribution(enum Type _t,double a, double b,double seed);
+   public:
+
+      enum Type
+      {
+         constant = 0,
+         uniform = 1,
+         exponential = 2,
+         normal = 3
+      };
+
+      enum Type t;
+
+      /**
+       * @brief Constructor parametrico
+       * @param _t tipo de generador
+       * @param _t a usado de diferentes formas dependiendo del tipo de distribucion
+       * @param _t b usado de diferentes formas dependiendo del tipo de distribucion
+       */
+      Distribution(enum Type _t,double a, double b,double seed);
 
 
-        /**
-         * @brief Borra la memoria ocupada por el generador asociado a la distribucion
-         */
-        ~Distribution();
+      /**
+       * @brief Borra la memoria ocupada por el generador asociado a la distribucion
+       */
+      ~Distribution();
 
 
-		/**
-		 * @return un numero aleatorio distribuido de acuerdo a la distribucion elegida
-		 */
+      /**
+       * @return un numero aleatorio distribuido de acuerdo a la distribucion elegida
+       */
 
-        inline double getVal()
-        {
+      inline double getVal()
+      {
          switch(t)
          {
-				case constant:
-                    return lamda;
+            case constant:
+               return lamda;
 
-				case uniform:
-                    return (*distribution_u)(generator);
+            case uniform:
+               return (*distribution_u)(generator);
 
-				case exponential:
-                    return -log((*distribution_u)(generator))*lamda;
+            case exponential:
+               return -log((*distribution_u)(generator))*lamda;
 
-				case normal:
-                    return (*distribution_n)(generator);
-			}
-		}
+            case normal:
+               return (*distribution_n)(generator);
+         }
+         return 0.0;//This should not ever be reached
+      }
 };
 
 #endif

@@ -17,7 +17,7 @@ struct FinalTimes
     double averageUsedTime;
     double averageWaitingTime;
     double turnAround;
-    FinalTimes()
+    FinalTimes():averageUsedTime(0.0), averageWaitingTime(0.0), turnAround(0.0)
     {
 
     }
@@ -27,7 +27,6 @@ struct FinalTimes
         averageUsedTime = a;
         averageWaitingTime = b;
         turnAround = c;
-
     }
 };
 

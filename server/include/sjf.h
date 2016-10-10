@@ -66,7 +66,7 @@ class SJF : public BaseAlgorithm{
 
          unsigned i=0;
 
-         int processIndex=0;///indica cual es el proximo proceso que llega
+         size_t processIndex=0;///indica cual es el proximo proceso que llega
 
          double simulationTime=0.0;///tiempo de simulacion
 
@@ -310,7 +310,8 @@ class SJF : public BaseAlgorithm{
          {
             FinalSocket fS;
             eventData.event=6;
-            (void)write(nSocket, (char *)(&eventData), sizeof(struct EventData));
+            int tmpRevVal = write(nSocket, (char *)(&eventData), sizeof(struct EventData));
+            (void)tmpRevVal;
 
             fS.averageUsedTime=averageUsageTime/numOfProcesses;
             fS.averageWaitingTime=averageWaitingTime/numOfProcesses;
@@ -327,7 +328,7 @@ class SJF : public BaseAlgorithm{
             fS.minTurnAround=_ss.results[1][0].turnAround;
             fS.turnAround=turnAround/numOfProcesses;
 
-            for (int i=0; i<numOfProcesses; i++)
+            for (size_t i=0; i<numOfProcesses; i++)
             {
 
                if(_ss.results[1][i].averageUsedTime>fS.maxUsedTime)//busca el maximo
@@ -385,7 +386,8 @@ class SJF : public BaseAlgorithm{
             //                std::cout<<"tiempo de espera Min: "<<fS.minWaitingTime;//minWaitingTime
 
 
-            (void)write(nSocket, (char *)(&fS), sizeof(struct FinalSocket));
+            tmpRevVal = write(nSocket, (char *)(&fS), sizeof(struct FinalSocket));
+            (void)tmpRevVal;
             _ss.multiple_fin[1]=true;
 
          }

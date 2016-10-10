@@ -19,6 +19,7 @@
 //numero de algoritmos que se van ejecutar
 void * mulAlgorithmFunct(void * _n)
 {
+   (void)_n;//unused parameter, @TODO this should be removed in the future
 
    bool con=true;
 
@@ -37,7 +38,7 @@ void * mulAlgorithmFunct(void * _n)
       }
       if(!sS.connected)
       {
-         return;
+         return NULL;
       }
 
       std::cerr<<"Esperando ...\n";
@@ -121,8 +122,9 @@ void * mulAlgorithmFunct(void * _n)
 
 
       int p;
-      (void)write(sS.t, (char *)(&mSD), sizeof(struct MutlSimData));
-      (void)read(sS.t, (char *)(&p), sizeof(int));
+      int tmpRetVal = write(sS.t, (char *)(&mSD), sizeof(struct MutlSimData));
+      tmpRetVal = read(sS.t, (char *)(&p), sizeof(int));
+      (void)tmpRetVal;
 
       std::cerr<<"Recibido "<<p<<std::endl;
    }
@@ -133,6 +135,7 @@ void * mulAlgorithmFunct(void * _n)
       sS.multiple_fin[i]=false;
    }
    close(sS.t);
+   return NULL;
 }
 
 void * connection_handler(void *socket_desc)
@@ -142,7 +145,8 @@ void * connection_handler(void *socket_desc)
    std::cout<<"Entro al thread "<<t<<std::endl;
    struct DataSocket1 dataSocket1;
    struct ThreapParamM tPM;//para guardar el numero de simulaciones y el numero del socket
-   int r = read(t, (char *)(&dataSocket1), sizeof(struct DataSocket1));
+   int tmpRetVal = read(t, (char *)(&dataSocket1), sizeof(struct DataSocket1));
+   (void)tmpRetVal;
    pthread_t multipleAlgorithm;
 
 
@@ -182,9 +186,9 @@ void * connection_handler(void *socket_desc)
       if( pthread_create( &multipleAlgorithm, NULL ,  (void*)&mulAlgorithmFunct , (void*) &tPM) < 0)
       {
          perror("could not create thread");
-         return;
+         return NULL;
       }
-      return;
+      return NULL;
 
    }
 
@@ -211,11 +215,11 @@ void * connection_handler(void *socket_desc)
       sS.nn--;
    }
 
-   Distribution* dArrTime;
-   Distribution* dDurationTime;
+   Distribution* dArrTime = NULL;
+   Distribution* dDurationTime = NULL;
 
-   Distribution* dCpuBurstTime;
-   Distribution* dBlockingTime;
+   Distribution* dCpuBurstTime = NULL;
+   Distribution* dBlockingTime = NULL;
 
    ProcessGenerator p(dataSocket1.n);
 
@@ -384,6 +388,7 @@ void * connection_handler(void *socket_desc)
 
    std::cout<<"Fin thread "<<t<<std::endl;
 
+   return NULL;
 }
 
 Simulator::Simulator()

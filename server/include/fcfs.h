@@ -56,7 +56,7 @@ class FCFS: public BaseAlgorithm
 
          unsigned i=0;
 
-         int processIndex=0;///indica cual es el proximo proceso que llega
+         size_t processIndex=0;///indica cual es el proximo proceso que llega
 
          double simulationTime=0.0;///tiempo de simulacion
 
@@ -77,7 +77,7 @@ class FCFS: public BaseAlgorithm
           * 4 pasa de bloqueado a listo
           * 5 Proceso de cpu termina
           */
-         int eventToProcess;
+         int eventToProcess = -1;
 
          double averageIoTime=0.0;//tiempo de bloquedo promedio(IO)
 
@@ -293,7 +293,8 @@ class FCFS: public BaseAlgorithm
          {
             FinalSocket fS;
             eventData.event = 6;
-            (void)write(nSocket, (char *)(&eventData), sizeof(struct EventData));
+            int tmpRevVal = write(nSocket, (char *)(&eventData), sizeof(struct EventData));
+            (void)tmpRevVal;
 
             fS.averageUsedTime = averageUsageTime/numOfProcesses;
             fS.averageWaitingTime = averageWaitingTime/numOfProcesses;
@@ -308,7 +309,7 @@ class FCFS: public BaseAlgorithm
             fS.minTurnAround =_ss.results[0][0].turnAround;
             fS.turnAround = turnAround/numOfProcesses;
 
-            for (int i = 0; i < numOfProcesses; i++)
+            for (size_t i = 0; i < numOfProcesses; i++)
             {
                if(_ss.results[0][i].averageUsedTime>fS.maxUsedTime)//busca el maximo
                {
@@ -359,7 +360,8 @@ class FCFS: public BaseAlgorithm
             fS.cpuUtil = percentage/simulationTime;
             fS.IOAvgTime = averageIoTime/numOfProcesses;
 
-            (void)write(nSocket, (char *)(&fS), sizeof(struct FinalSocket));
+            tmpRevVal = write(nSocket, (char *)(&fS), sizeof(struct FinalSocket));
+            (void)tmpRevVal;
 
             _ss.multiple_fin[0]=true;
 

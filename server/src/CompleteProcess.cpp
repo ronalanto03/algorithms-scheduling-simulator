@@ -12,7 +12,7 @@ CompleteProcess::CompleteProcess ( ):cpuBurstTime(0.0),blockingTime(0.0),waiting
 }
 
 
-CompleteProcess::CompleteProcess ( BaseProcess & p )
+CompleteProcess::CompleteProcess (const BaseProcess & p )
 {
 	BaseProcess::setPid( p.getPid() );
 	BaseProcess::setArrTime( p.getArrTime() );
