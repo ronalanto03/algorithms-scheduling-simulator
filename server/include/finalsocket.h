@@ -7,6 +7,7 @@
 
 #ifndef FINALSOCKET_H
 #define FINALSOCKET_H
+#include<finaltimes.h>
 
 
 
