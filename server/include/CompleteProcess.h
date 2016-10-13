@@ -27,7 +27,7 @@ class CompleteProcess : public BaseProcess
       /**
        * Constructor por copia
        */
-      CompleteProcess ( BaseProcess &);
+      CompleteProcess (const BaseProcess &);
 
 
       /**
@@ -72,7 +72,7 @@ class CompleteProcess : public BaseProcess
          * Obtiene el valor del tiempo de rafaga
          * @return el valor de cpuBurstTime
        */
-      double getCpuBurstTime ( )
+      double getCpuBurstTime ( ) const
       {
          return cpuBurstTime;
       }
@@ -90,7 +90,7 @@ class CompleteProcess : public BaseProcess
        * Obtiene el valor de tiempo restante(el q le falta al proceso para terminar su ejecucion)
        * @return el valor de remainingTime
        */
-      double getRemainingTime ( )
+      double getRemainingTime ( ) const
       {
          return remainingTime;
       }
@@ -108,7 +108,7 @@ class CompleteProcess : public BaseProcess
        * Obtiene el valor del tiempo de bloqueo del proceso.
        * @return el valor de blockingTime
        */
-      double getBlockingTime ( )
+      double getBlockingTime ( ) const
       {
          return blockingTime;
       }
@@ -126,7 +126,7 @@ class CompleteProcess : public BaseProcess
        * Obtiene el valor del tiempo de bloqueo del proceso.
        * @return the value of waitingTime
        */
-      double getWaitingTime ( )
+      double getWaitingTime ( ) const
       {
          return waitingTime;
       }
@@ -144,7 +144,7 @@ class CompleteProcess : public BaseProcess
        * Obtiene el valor de numero de veces que entra al cpu.
        * @return el valor de nRunsCPU.
        */
-      int getNRunsCPU( )
+      int getNRunsCPU( ) const
       {
          return nRunsCPU;
       }
@@ -162,7 +162,7 @@ class CompleteProcess : public BaseProcess
        * Obtiene el valor del tiempo promedio que el proceso usa el cpu.
        * @return el valor de averageUsageTime.
        */
-      double getAverageUsageTime( )
+      double getAverageUsageTime( ) const
       {
          return averageUsageTime;
       }
@@ -180,7 +180,7 @@ class CompleteProcess : public BaseProcess
        * Obtiene el valor del quantum del proceso.
        * @return el valor de quantum.
        */
-      double getQuantum( )
+      double getQuantum( ) const
       {
          return quantum;
       }
@@ -198,7 +198,7 @@ class CompleteProcess : public BaseProcess
        * Obtiene el valor de numero de veces que entra a bloqueado.
        * @return el valor de nB.
        */
-      int getNB( )
+      int getNB( ) const
       {
          return nB;
       }
@@ -216,7 +216,7 @@ class CompleteProcess : public BaseProcess
        * Obtiene el valor del tiempo promedio que el proceso esta bloqueado.
        * @return el valor de averageIoTime.
        */
-      double getAverageIoTime( )
+      double getAverageIoTime( ) const
       {
          return averageIoTime;
       }

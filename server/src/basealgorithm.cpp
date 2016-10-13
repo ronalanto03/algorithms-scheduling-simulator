@@ -10,8 +10,8 @@ BaseAlgorithm::BaseAlgorithm(
                              const int _numOfProcesses,
                              const int _nSocket
                              ):
-    baseProcesses(_baseProcess),
     numOfProcesses(_numOfProcesses),
+    baseProcesses(_baseProcess),
     nSocket(_nSocket),
     connected(true)
 {
@@ -62,9 +62,11 @@ void BaseAlgorithm::writeEventInfo(const double time, const int event, const Com
         prueba.close();
 
 
-    (void)write(nSocket, (char *)(&eventData), sizeof(struct EventData));
+    int tmpRetVal = write(nSocket, (char *)(&eventData), sizeof(struct EventData));
+    (void)tmpRetVal;
 
-    (void)read(nSocket, (char *)(&eventData), sizeof(struct EventData));
+    tmpRetVal = read(nSocket, (char *)(&eventData), sizeof(struct EventData));
+    (void)tmpRetVal;
 
     if(eventData.event==-1)
     {

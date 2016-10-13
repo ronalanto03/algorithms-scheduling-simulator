@@ -3,7 +3,9 @@
 
 int main(int argc,char* argv[])
 {
-    Simulator sim;
-    sim.simulate(31010);
-    return 0;
+   (void)argc;
+   (void)argv;
+   Simulator sim;
+   sim.simulate(31010);
+   return 0;
 }

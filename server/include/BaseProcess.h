@@ -54,7 +54,7 @@ class BaseProcess
        * Obtiene el valor de id del proceso
        * @return el valor de pid
        */
-      inline int getPid ( )
+      inline int getPid ( ) const
       {
          return pid;
       }
@@ -72,7 +72,7 @@ class BaseProcess
          * Obtiene el valor del tiempo de llegada del proceso
          * @return el valor de arrTime
        */
-      inline double getArrTime ( )
+      inline double getArrTime ( ) const
       {
          return arrTime;
       }
@@ -89,7 +89,7 @@ class BaseProcess
          * Obtiene el valor de tiempo de duracion total del proceso
          * @return el valor de durationTime
        */
-      inline double getDurationTime ( )
+      inline double getDurationTime ( ) const
       {
          return durationTime;
       }
