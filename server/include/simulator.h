@@ -13,12 +13,7 @@
 #include <netinet/in.h>
 #include <pthread.h> //for threading , link with lpthread
 
-
-#include <eventData.h>
 #include <processGenerator.h>
-#include  <finaltimes.h>
-
-
 #include <fcfs.h>
 #include <sjf.h>
 #include <psjf.h>

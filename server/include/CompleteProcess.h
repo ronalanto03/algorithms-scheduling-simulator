@@ -10,58 +10,94 @@
 #include "BaseProcess.h"
 
 /**
- * class CompleteProcess
- * Representa a un proceso con todos los atributos necesarios para la simulacion.
+ * Class Complete Process
+ *  represents a process with all the attributes required for the simulation.
  */
 
 class CompleteProcess : public BaseProcess
 {
    public:
 
+
       /**
-       * Constructor por defecto
+       * @brief CompleteProcess
+       * Default constructor
        */
       CompleteProcess ( );
 
-
       /**
-       * Constructor por copia
+       * @brief CompleteProcess
+       * Copy constructor
        */
       CompleteProcess (const BaseProcess &);
 
-
       /**
-       * Destructor
+       * destroyer
        */
       ~CompleteProcess ( );
 
 
    private:
 
-      double cpuBurstTime;/**< Tiempo de rafaga*/
+      /**
+       * @brief cpuBurstTime
+       * Time rafaga
+       */
+      double cpuBurstTime;
 
-      double remainingTime;/**<  Tiempo restante(el q le falta al proceso para terminar su ejecucion)*/
+      /**
+       * @brief remainingTime
+       * Time left (the q missing from the process to terminate its execution)
+       */
+      double remainingTime;
 
-      double blockingTime;/**< Tiempo de bloqueo del proceso*/
+      /**
+       * @brief blockingTime
+       * Lock time process *
+       */
+      double blockingTime;
 
-      double waitingTime;/**< Tiempo de espera del proceso*/
+      /**
+       * @brief waitingTime
+       * Time of waiting of the process
+       */
+      double waitingTime;
 
-      double averageUsageTime;/**< Tiempo de uso promedio del proceso*/
+      /**
+       * @brief averageUsageTime
+       * Average usage time of the process
+       */
+      double averageUsageTime;
 
-      int nRunsCPU;/**< numero de veces que sube el proceso a cpu*/
+      /**
+       * @brief nRunsCPU
+       * number of times up the process cpu
+       */
+      int nRunsCPU;
 
-      double quantum;/**< Quantum de tiempo asigando al proceso(usado para eñ algoritmo de RR)*/
+      /**
+       * @brief quantum
+       * Quantum allotted time to process (used for algorithm RR)
+       */
+      double quantum;
 
-      int nB;/**< numero de veces que baja el proceso a bloqueado*/
+      /**
+       * @brief nB
+       * number of times down the process blocked
+       */
+      int nB;
 
+      /**
+       * @brief averageIoTime
+       */
       double averageIoTime;/**< Tiempo de blockeo promedio del proceso*/
 
 
    public:
 
       /**
-       * Asigna el valor del tiempo de rafaga
-       * @param new_var el nuevo valor de cpuBurstTime
+       * Assign the time value rafaga
+       * @param new_var the new value of cpuBurstTime
        */
       inline void setCpuBurstTime ( double new_var )
       {
@@ -69,8 +105,8 @@ class CompleteProcess : public BaseProcess
       }
 
       /**
-         * Obtiene el valor del tiempo de rafaga
-         * @return el valor de cpuBurstTime
+       * Gets the time value rafaga
+       * @return The value of cpuBurstTime
        */
       double getCpuBurstTime ( ) const
       {
@@ -78,8 +114,8 @@ class CompleteProcess : public BaseProcess
       }
 
       /**
-       * Asigna el valor del tiempo restante(el q le falta al proceso para terminar su ejecucion)
-       * @param new_var el nuevo valor de remainingTime
+       * Assign the value of the remaining time (q lacks the process to terminate its execution)
+       * @param new_var the new value of remainingTime
        */
       void setRemainingTime ( double new_var )
       {
@@ -87,8 +123,8 @@ class CompleteProcess : public BaseProcess
       }
 
       /**
-       * Obtiene el valor de tiempo restante(el q le falta al proceso para terminar su ejecucion)
-       * @return el valor de remainingTime
+       * Gets the value of remaining time (q lacks the process to terminate its execution)
+       * @return the value of remainingTime
        */
       double getRemainingTime ( ) const
       {
@@ -96,8 +132,8 @@ class CompleteProcess : public BaseProcess
       }
 
       /**
-       * Asigna el valor del tiempo de bloqueo del proceso.
-       * @param new_var el nuevo valor de blockingTime
+       * Assign the value of time blocking the process.
+       * @param Nnew_var the new value of blockingTime
        */
       void setBlockingTime ( double new_var )
       {
@@ -105,8 +141,8 @@ class CompleteProcess : public BaseProcess
       }
 
       /**
-       * Obtiene el valor del tiempo de bloqueo del proceso.
-       * @return el valor de blockingTime
+       * Gets the time value of blocking the process.
+       * @return The value of blockingTime
        */
       double getBlockingTime ( ) const
       {
@@ -114,8 +150,8 @@ class CompleteProcess : public BaseProcess
       }
 
       /**
-       * Asigna el valor del tiempo de espera del proceso.
-       * @param new_var el nuevo valor de waitingTime
+       * Assign the value of the timeout process.
+       * @param New_var the new value of WaitingTime
        */
       void setWaitingTime ( double new_var )
       {
@@ -123,8 +159,8 @@ class CompleteProcess : public BaseProcess
       }
 
       /**
-       * Obtiene el valor del tiempo de bloqueo del proceso.
-       * @return the value of waitingTime
+       * Gets the time value of blocking the process.
+       * @return The value of WaitingTime
        */
       double getWaitingTime ( ) const
       {
@@ -132,8 +168,8 @@ class CompleteProcess : public BaseProcess
       }
 
       /**
-       * Asigna el valor de numero de veces que entra al cpu.
-       * @param new_var el nuevo valor de nRunsCPU
+       * Assign the value of number of times entering the cpu.
+       *@param new_var the new value of nRunsCPU
        */
       void setNRunsCPU( int new_var )
       {
@@ -141,8 +177,8 @@ class CompleteProcess : public BaseProcess
       }
 
       /**
-       * Obtiene el valor de numero de veces que entra al cpu.
-       * @return el valor de nRunsCPU.
+       * Gets the value of number of times entering the cpu.
+       * @return The value of nRunsCPU.
        */
       int getNRunsCPU( ) const
       {
@@ -150,8 +186,8 @@ class CompleteProcess : public BaseProcess
       }
 
       /**
-       * Asigna le valor del tiempo promedio que el proceso usa el cpu.
-       * @param new_var el nuevo valor de averageUsageTime.
+       * Assign the value of the average time that the process uses the cpu.
+       * @param new_var the new value of averageUsageTime.
        */
       void setAverageUsageTime( double new_var )
       {
@@ -159,8 +195,8 @@ class CompleteProcess : public BaseProcess
       }
 
       /**
-       * Obtiene el valor del tiempo promedio que el proceso usa el cpu.
-       * @return el valor de averageUsageTime.
+       * Gets the value of the average time that the process uses the cpu.
+       * @return The value of averageUsageTime.
        */
       double getAverageUsageTime( ) const
       {
@@ -168,8 +204,8 @@ class CompleteProcess : public BaseProcess
       }
 
       /**
-       * Asigna le valor del quantum del proceso.
-       * @param new_var el nuevo valor de quantum.
+       * Assign the value of the quantum of the process.
+       * @param New_var the new quantum value.
        */
       void setQuantum( double new_var )
       {
@@ -177,8 +213,8 @@ class CompleteProcess : public BaseProcess
       }
 
       /**
-       * Obtiene el valor del quantum del proceso.
-       * @return el valor de quantum.
+       * Gets the value of the quantum of the process.
+       * @return The value of quantum.
        */
       double getQuantum( ) const
       {
@@ -186,8 +222,8 @@ class CompleteProcess : public BaseProcess
       }
 
       /**
-       * Asigna el valor de numero de veces que entra a bloqueado.
-       * @param new_var el nuevo valor de nT
+       * Assign the value of number of times entering locked.
+       * @param new_var the new value of nT
        */
       void setNB( int new_var )
       {
@@ -195,8 +231,8 @@ class CompleteProcess : public BaseProcess
       }
 
       /**
-       * Obtiene el valor de numero de veces que entra a bloqueado.
-       * @return el valor de nB.
+       * Gets the value of number of times entering locked.
+       * @return The value of nB.
        */
       int getNB( ) const
       {
@@ -204,8 +240,8 @@ class CompleteProcess : public BaseProcess
       }
 
       /**
-       * Asigna le valor del tiempo promedio que el proceso esta bloqueado.
-       * @param new_var el nuevo valor de averageIoTime.
+       * Assign the value of the average time the process is blocked.
+       * @param New_var the new value of averageIoTime.
        */
       void setAverageIoTime( double new_var )
       {
@@ -213,8 +249,8 @@ class CompleteProcess : public BaseProcess
       }
 
       /**
-       * Obtiene el valor del tiempo promedio que el proceso esta bloqueado.
-       * @return el valor de averageIoTime.
+       * Gets the value of the average time that the process is blocked.
+       * @return The value of averageIoTime.
        */
       double getAverageIoTime( ) const
       {
@@ -222,7 +258,7 @@ class CompleteProcess : public BaseProcess
       }
 
       /**
-       * @brief Asigna un proceso a otro copiando cada uno de sus parámetros.
+       * @brief Assigns one process to another by copying each of its parameters.
        */
       CompleteProcess & operator =(CompleteProcess p);
 

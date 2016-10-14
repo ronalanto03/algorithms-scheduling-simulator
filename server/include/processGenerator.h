@@ -20,9 +20,14 @@ class ProcessGenerator
 
    private:
 
-      BaseProcess * baseProcesses;/**< Puntero al que s ele dara memoria para almacenar los procesos*/
+      /**
+       * Puntero al que s ele dara memoria para almacenar los procesos
+       */
+      BaseProcess * baseProcesses;
 
       int nProcs;/**< Numero de procesos*/
+
+
    public:
 
       /**

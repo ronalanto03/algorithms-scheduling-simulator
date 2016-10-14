@@ -10,20 +10,7 @@
 #ifndef SJF_H
 #define SJF_H
 
-#include<CompleteProcess.h>
-#include<priorityQueue.h>
-#include<distributions.h>
-#include<fstream>
-#include<iostream>
-#include<iomanip>
-#include<climits>
-#include<cfloat>
-#include<eventData.h>
-#include<vector>
-#include<finaltimes.h>
-#include<finalsocket.h>
 #include<basealgorithm.h>
-
 
 /**
  * @class SJF
@@ -33,22 +20,19 @@
 
 
 class SJF : public BaseAlgorithm{
-   private:
-
-
-      PriorityQueue<CompleteProcess,CmpLessB,BaseAlgorithm::CmpGreaterOrEqualB> priorityQueue;/**< Cola de procesos bloqueados*/
-
-      PriorityQueue<CompleteProcess,BaseAlgorithm::CmpLessR,BaseAlgorithm::CmpGreaterOrEqualR> readyQueue;/**< Cola de listo para ejecutarse*/
-
-   //  std::ofstream out;
 
    public:
 
       SJF( const BaseProcess * _baseProcesses,const int _n, const int _t): BaseAlgorithm(_baseProcesses,_n,_t)
-
       {
+         init();
       }
 
+      void init()
+      {
+         blockingQueue = new PriorityQueue<CompleteProcess,CmpLessB,CmpGreaterOrEqualB>;
+         readyQueue = new PriorityQueue<CompleteProcess,CmpLessR,CmpGreaterOrEqualR>;
+      }
 
 
 
@@ -63,50 +47,20 @@ class SJF : public BaseAlgorithm{
 
       void simulate(Distribution * dCpuBurstTime,Distribution * dBlockingTime,SharedSimulation & _ss)
       {
-
-         unsigned i=0;
-
-         size_t processIndex=0;///indica cual es el proximo proceso que llega
-
-         double simulationTime=0.0;///tiempo de simulacion
-
-         double eventToProcessTime=DBL_MAX;//tiempo de proceso que se va a ejecutar
-
-         double percentage=0.0;//porcejentaje de uso
-
-         double averageWaitingTime=0.0;//tiempo de espera promedio
-
-         double averageUsageTime=0.0;//tiempo de uso promedio
-
-         int eventToProcess=-1;//se usa para saber cual evento es el que debe procesarse primero,1 significa que llega un nuevo proceso,2 pasa un proceso de la cola de listo al cpu, 3 Pasa del CPU a bloqueado, 4 pasa de bloqueado a listo,5 Proceso de cpu termina
-
          double minimumUsedTime;
+
          bool equalMinimum=true;
 
          double maximumUsedTime;
 
          bool equalMaximum=true;
 
-         CompleteProcess cpuP(BaseAlgorithm::baseProcesses[0]);//representa al proceso que esta actualmente ejecutandose
-
-         double averageIoTime=0.0;//tiempo de bloquedo promedio(IO)
-
-         int inIO=0;//numero de veces que llegan procesos a bloqueado
-
-         int inCpu=0;//numero de veces que se ejecutan los procesos
-
-         double turnAround=0.0;
-
-
          cpuP.setPid(-1);//no hay nada en la cpu
-
-
-
 
          while(connected and
                ( processIndex<numOfProcesses or
-                 not(priorityQueue.is_empty()) or
-                 not(readyQueue.is_empty()) or
+                 not(blockingQueue->is_empty()) or
+                 not(readyQueue->is_empty()) or
                  cpuP.getPid()!=-1))
          {
 
@@ -122,7 +76,7 @@ class SJF : public BaseAlgorithm{
             }
 #endif
 
-            if(not(readyQueue.is_empty()) and cpuP.getPid()==-1)
+            if(not(readyQueue->is_empty()) and cpuP.getPid()==-1)
             {
                eventToProcess=5;
                eventToProcessTime=0;
@@ -130,10 +84,10 @@ class SJF : public BaseAlgorithm{
 
             else
             {
-               if(not priorityQueue.is_empty())
+               if(not blockingQueue->is_empty())
                {
                   eventToProcess=4;
-                  eventToProcessTime=priorityQueue.watch().getBlockingTime();
+                  eventToProcessTime=blockingQueue->watch().getBlockingTime();
                }
 
                if((cpuP.getPid()!=-1 ))
@@ -169,14 +123,14 @@ class SJF : public BaseAlgorithm{
             {//llega un proceso
                CompleteProcess tmp(baseProcesses[processIndex++]);
                tmp.setCpuBurstTime(dCpuBurstTime->getVal());
-               if(not readyQueue.is_empty()){
-                  readyQueue.decrementTime(eventToProcessTime,false);
+               if(not readyQueue->is_empty()){
+                  readyQueue->decrementTime(eventToProcessTime,false);
                }
 
-               readyQueue.put(tmp);
+               readyQueue->put(tmp);
 
-               if(not priorityQueue.is_empty())
-                  priorityQueue.decrementTime(eventToProcessTime,true);
+               if(not blockingQueue->is_empty())
+                  blockingQueue->decrementTime(eventToProcessTime,true);
 
                if(cpuP.getPid() != -1)
                {
@@ -192,11 +146,11 @@ class SJF : public BaseAlgorithm{
 
             else if(eventToProcess==2)
             {//proceso termina
-               if(not readyQueue.is_empty())
-                  readyQueue.decrementTime(eventToProcessTime,false);
+               if(not readyQueue->is_empty())
+                  readyQueue->decrementTime(eventToProcessTime,false);
 
-               if(not priorityQueue.is_empty())
-                  priorityQueue.decrementTime(eventToProcessTime,true);
+               if(not blockingQueue->is_empty())
+                  blockingQueue->decrementTime(eventToProcessTime,true);
 
                cpuP.setRemainingTime(0.0);
                cpuP.setCpuBurstTime(0.0);
@@ -247,13 +201,13 @@ class SJF : public BaseAlgorithm{
                cpuP.setNB(cpuP.getNB()+1);
                cpuP.setAverageIoTime(cpuP.getAverageIoTime()+cpuP.getBlockingTime());
 
-               if(not priorityQueue.is_empty())
-                  priorityQueue.decrementTime(eventToProcessTime,true);
+               if(not blockingQueue->is_empty())
+                  blockingQueue->decrementTime(eventToProcessTime,true);
 
-               priorityQueue.put(cpuP);
+               blockingQueue->put(cpuP);
 
-               if(not readyQueue.is_empty())
-                  readyQueue.decrementTime(eventToProcessTime,false);
+               if(not readyQueue->is_empty())
+                  readyQueue->decrementTime(eventToProcessTime,false);
 
                simulationTime+=eventToProcessTime;//avanza el tiempo de simulacion
 
@@ -264,16 +218,16 @@ class SJF : public BaseAlgorithm{
             else if(eventToProcess==4)
             {//bloqueado a listo
                CompleteProcess tmp;
-               if(not priorityQueue.is_empty())
+               if(not blockingQueue->is_empty())
                {
-                  priorityQueue.decrementTime(eventToProcessTime,true);
-                  tmp=priorityQueue.get();
+                  blockingQueue->decrementTime(eventToProcessTime,true);
+                  tmp=blockingQueue->get();
                   tmp.setCpuBurstTime(0.0);
-                  if(not readyQueue.is_empty())
-                     readyQueue.decrementTime(eventToProcessTime,false);
+                  if(not readyQueue->is_empty())
+                     readyQueue->decrementTime(eventToProcessTime,false);
 
                   tmp.setCpuBurstTime(dCpuBurstTime->getVal());
-                  readyQueue.put(tmp);
+                  readyQueue->put(tmp);
 
                }
 
@@ -293,7 +247,7 @@ class SJF : public BaseAlgorithm{
 
             else
             {
-               cpuP=readyQueue.get();
+               cpuP=readyQueue->get();
 
                cpuP.setNRunsCPU(cpuP.getNRunsCPU()+1);
                writeEventInfo(simulationTime,eventToProcess,cpuP,_ss);
@@ -371,40 +325,18 @@ class SJF : public BaseAlgorithm{
             fS.cpuUtil=percentage/simulationTime;
             fS.IOAvgTime=averageIoTime/numOfProcesses;
 
-
-
-            //                std::cout<<"tiempo de uso Media: "<<fS.averageUsedTime;
-            //                std::cout<<"tiempo de espera Media: "<<fS.averageWaitingTime;
-
-
-            //                std::cout<<"tiempo de uso SD: "<<fS.sDUsedTime;//donde se almacenara la desviacion de tiempo de uso
-            //                std::cout<<"tiempo de espera SD: "<<fS.sDWaitingTime;//donde se almacenara la desviacion de tiempo de espera
-
-            //                std::cout<<"tiempo de uso Max: "<<fS.maxUsedTime;//maxUsedTime
-            //                std::cout<<"tiempo de uso Min: "<<fS.minUsedTime;//minUsedTime
-            //                std::cout<<"tiempo de espera Max: "<<fS.maxWaitingTime;//maxWaitingTime
-            //                std::cout<<"tiempo de espera Min: "<<fS.minWaitingTime;//minWaitingTime
-
-
             tmpRevVal = write(nSocket, (char *)(&fS), sizeof(struct FinalSocket));
             (void)tmpRevVal;
             _ss.multiple_fin[1]=true;
 
          }
 
-
-
-
-
-
-
-
       }
-
 
       ~SJF()
       {
-     //    out.close();
+         delete blockingQueue;
+         delete readyQueue;
       }
 
 };

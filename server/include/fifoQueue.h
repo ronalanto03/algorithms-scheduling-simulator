@@ -9,15 +9,14 @@
 #define FIFOQUEUE_H
 
 #include <node.h>
-#include<iostream>
-
+#include<iqueue.h>
 
 /**
   * @class FifoQueue
   * @brief Cola de tipo fifo.Representa la cola de listo en algunos de los algoritmos de planificacion de procesos.
   */
 template <typename T>
-class FifoQueue
+class FifoQueue : public IQueue <T>
 {
    private:
 
@@ -30,7 +29,7 @@ class FifoQueue
        * @brief Inicializa a rear_ptr en NULL y el num_nodes en 0
        */
 
-      FifoQueue() : rear_ptr(NULL), num_nodes(0)
+   FifoQueue() : rear_ptr(NULL), num_nodes(0)
       {
          /* empty */
       }
@@ -95,8 +94,9 @@ class FifoQueue
        * Especialmente para el uso de los algoritmos de planificacion de procesos.
        * @brief Decrementa el los tiempos de espera de los procesos que estan en la cola
        */
-      void decrementTime(double time)
+      void decrementTime(double time, bool b = false)
       {
+          (void)b;
          Node<T> * current=rear_ptr;
          current->getData().setWaitingTime(current->getData().getWaitingTime() + time );
 

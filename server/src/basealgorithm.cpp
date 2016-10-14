@@ -6,15 +6,32 @@ BaseAlgorithm::BaseAlgorithm()
 }
 
 BaseAlgorithm::BaseAlgorithm(
-                             const BaseProcess * _baseProcess,
-                             const int _numOfProcesses,
-                             const int _nSocket
-                             ):
-    numOfProcesses(_numOfProcesses),
-    baseProcesses(_baseProcess),
-    nSocket(_nSocket),
-    connected(true)
+      const BaseProcess * _baseProcess,
+      const int _numOfProcesses,
+      const int _nSocket
+      ):
+   numOfProcesses(_numOfProcesses),
+   baseProcesses(_baseProcess),
+   nSocket(_nSocket),
+   connected(true),
+   i(0),
+   processIndex(0),
+   simulationTime(DBL_MAX),
+   eventToProcessTime(0.0),
+   percentage(0.0),
+   averageWaitingTime(0.0),
+   averageUsageTime(0.0),
+   eventToProcess(-1),
+   cpuP(baseProcesses[0]),
+   inIO(0),
+   inCpu(0),
+   turnAround(0.0)
 {
+}
+
+void BaseAlgorithm::init()
+{
+   //  priorityQueue = new PriorityQueue<CompleteProcess,CmpLessB,CmpGreaterOrEqualB>;
 }
 
 /**
@@ -26,51 +43,52 @@ BaseAlgorithm::BaseAlgorithm(
 void BaseAlgorithm::writeEventInfo(const double time, const int event, const CompleteProcess p, SharedSimulation &_ss)
 {
 
-    eventData.time =  time;
-    eventData.pid =  p.getPid();
-    eventData.durationTime = p.getDurationTime();
-    eventData.event = event;
-    eventData.arrTime = p.getArrTime();
-    eventData.remainingTime = p.getRemainingTime();
-    eventData.waitingTime = p.getWaitingTime();
-    eventData.cpuBurstTime = p.getCpuBurstTime();
-    eventData.blockingTime = p.getBlockingTime();
-    eventData.usedTime = p.getAverageUsageTime();
-    eventData.nB = p.getNB();
-    eventData.nT = p.getNRunsCPU();
-    eventData.allBlockingTime = p.getAverageIoTime();
+   eventData.time =  time;
+   eventData.pid =  p.getPid();
+   eventData.durationTime = p.getDurationTime();
+   eventData.event = event;
+   eventData.arrTime = p.getArrTime();
+   eventData.remainingTime = p.getRemainingTime();
+   eventData.waitingTime = p.getWaitingTime();
+   eventData.cpuBurstTime = p.getCpuBurstTime();
+   eventData.blockingTime = p.getBlockingTime();
+   eventData.usedTime = p.getAverageUsageTime();
+   eventData.nB = p.getNB();
+   eventData.nT = p.getNRunsCPU();
+   eventData.allBlockingTime = p.getAverageIoTime();
 
-    std::ofstream prueba;
+   std::ofstream prueba;
 
-    prueba.open("prueba.txt",std::ios_base::out|std::ios_base::app);
+   prueba.open("prueba.txt",std::ios_base::out|std::ios_base::app);
 
-    prueba<<eventData.time<<"\t"
-          <<eventData.pid<<"\t"
-          <<eventData.durationTime<<"\t"
-          << eventData.event<<"\t"
-          << eventData.arrTime<<"\t"
-          << eventData.remainingTime<<"\t"
-          <<eventData.waitingTime<<"\t"
-          <<eventData.cpuBurstTime<<"\t"
-          <<eventData.blockingTime<<"\t"
-          << eventData.usedTime<<"\t"
-          << eventData.nB<<"\t"
-          << eventData.nT<<"\t"
-          << eventData.allBlockingTime<<"\t"<<"**********"<<"\n";
-
-
-        prueba.close();
+   prueba<<eventData.time<<"\t"
+        <<eventData.pid<<"\t"
+       <<eventData.durationTime<<"\t"
+      << eventData.event<<"\t"
+      << eventData.arrTime<<"\t"
+      << eventData.remainingTime<<"\t"
+      <<eventData.waitingTime<<"\t"
+     <<eventData.cpuBurstTime<<"\t"
+    <<eventData.blockingTime<<"\t"
+   << eventData.usedTime<<"\t"
+   << eventData.nB<<"\t"
+   << eventData.nT<<"\t"
+   << eventData.allBlockingTime<<"\t"<<"**********"<<"\n";
 
 
-    int tmpRetVal = write(nSocket, (char *)(&eventData), sizeof(struct EventData));
-    (void)tmpRetVal;
+   prueba.close();
 
-    tmpRetVal = read(nSocket, (char *)(&eventData), sizeof(struct EventData));
-    (void)tmpRetVal;
 
-    if(eventData.event==-1)
-    {
-       connected=false;
-       _ss.connected=false;
-    }
+   int tmpRetVal = write(nSocket, (char *)(&eventData), sizeof(struct EventData));
+   (void)tmpRetVal;
+
+   tmpRetVal = read(nSocket, (char *)(&eventData), sizeof(struct EventData));
+   (void)tmpRetVal;
+
+   if(eventData.event==-1)
+   {
+      connected=false;
+      _ss.connected=false;
+   }
 }
+

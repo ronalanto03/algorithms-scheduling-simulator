@@ -18,7 +18,6 @@ template <typename T>
 class IQueue
 {
 public:
-    IQueue();
 
     /**
      * Insert a new element in the Queue.
@@ -53,7 +52,9 @@ public:
      * It is used by the sheduling algorithms.
      * @brief Decrements the waiting time of the processes in the Queue.
      */
-    virtual void decrementTime(double time) = 0;
+    virtual void decrementTime(double time,bool b = false) = 0;
+
+    virtual ~IQueue(){}
 
 };
 

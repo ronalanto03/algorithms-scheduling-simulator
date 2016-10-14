@@ -18,12 +18,20 @@
 class BaseProcess
 {
    protected:
+      /**
+       * Id of the process
+       */
+      int pid;
 
-      int pid;/**< Id del proceso*/
+      /**
+       * Process Arrival Time
+       */
+      double arrTime;
 
-      double arrTime;/**< Tiempo de llegada del proceso */
-
-      double durationTime;/**< Tiempo de duracion total del proceso */
+      /**
+       * Total duration of the process
+       */
+      double durationTime;
 
 
    public:
@@ -41,8 +49,8 @@ class BaseProcess
 
 
       /**
-       * Asigna el valor del Id del proceso
-       * @param new_var el nuevo valor de pid
+       * Assigns the value of the process ID
+       * @param new_var the new value of pid
        */
       inline void setPid ( int new_var )
       {
@@ -51,8 +59,8 @@ class BaseProcess
 
 
       /**
-       * Obtiene el valor de id del proceso
-       * @return el valor de pid
+       * Gets the process id
+       * @return the value of pid
        */
       inline int getPid ( ) const
       {
@@ -60,8 +68,8 @@ class BaseProcess
       }
 
       /**
-         * Asigna el valor del tiempo de llegada del proceso
-       * @param new_var el nuevo valor de arrTime
+       * Assigns the value of the arrival time of the process
+       * @param new_var the new value of arrTime
        */
       inline void setArrTime ( double new_var )
       {
@@ -69,8 +77,8 @@ class BaseProcess
       }
 
       /**
-         * Obtiene el valor del tiempo de llegada del proceso
-         * @return el valor de arrTime
+       * Gets the value of the arrival time of the process
+       * @return The value of arrTime
        */
       inline double getArrTime ( ) const
       {
@@ -78,16 +86,16 @@ class BaseProcess
       }
 
       /**
-         * Asigna el valor del tiempo de duracion total del proceso
-       * @param new_var el nuevo valor de durationTime
+       * Assign the value of the duration total process
+       * @param new_var the new value of durationTime
        */
       inline void setDurationTime ( double new_var )		 {
          durationTime = new_var;
       }
 
       /**
-         * Obtiene el valor de tiempo de duracion total del proceso
-         * @return el valor de durationTime
+       * Gets the value of total duration of the process
+       * @return The value of durationTime
        */
       inline double getDurationTime ( ) const
       {

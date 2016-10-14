@@ -7,12 +7,12 @@
 
 #ifndef FINALSOCKET_H
 #define FINALSOCKET_H
-<<<<<<< HEAD
+
 #include<finaltimes.h>
 
-=======
+
 #include "finaltimes.h"
->>>>>>> f9197b0d6cedc704c60fca1c52f60a5486b2a6df
+
 
 
 /**

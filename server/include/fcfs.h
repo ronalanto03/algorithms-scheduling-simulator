@@ -10,16 +10,6 @@
 #ifndef FIRST_COME_FIRST_SERVER_H
 #define FIRST_COME_FIRST_SERVER_H
 
-#include<CompleteProcess.h>
-#include<fifoQueue.h>
-#include<priorityQueue.h>
-#include<distributions.h>
-#include<iostream>
-#include<eventData.h>
-#include<vector>
-#include<finaltimes.h>
-#include<finalsocket.h>
-#include <unistd.h>
 #include<basealgorithm.h>
 
 /**
@@ -29,18 +19,18 @@
  */
 class FCFS: public BaseAlgorithm
 {
-   private:
-
-
-      PriorityQueue<CompleteProcess,CmpLessB,CmpGreaterOrEqualB> priorityQueue;/**< Cola de procesos bloqueados*/
-
-      FifoQueue<CompleteProcess> fifoQueue;/**< Cola de listo para ejecutarse*/
-
 
    public:
 
       FCFS(BaseProcess * _baseProcesses,int _n,int _t): BaseAlgorithm(_baseProcesses,_n,_t)
       {
+         init();
+      }
+
+      void init()
+      {
+         blockingQueue = new PriorityQueue<CompleteProcess,CmpLessB,CmpGreaterOrEqualB>;
+         readyQueue = new FifoQueue<CompleteProcess>;
       }
 
       /**
@@ -54,43 +44,6 @@ class FCFS: public BaseAlgorithm
                     SharedSimulation & _ss)
       {
 
-         unsigned i=0;
-
-         size_t processIndex=0;///indica cual es el proximo proceso que llega
-
-         double simulationTime=0.0;///tiempo de simulacion
-
-         double eventToProcessTime=-1;//tiempo de proceso que se va a ejecutar
-
-         double percentage=0.0;//porcejentaje de uso
-
-         double averageWaitingTime=0.0;//tiempo de espera promedio
-
-         double averageUsageTime=0.0;//tiempo de uso promedio
-
-         /**
-          * @brief eventToProcess
-          * Se usa para saber cual evento es el que debe procesarse primero
-          * 1 significa que llega un nuevo proceso
-          * 2 pasa un proceso de la cola de listo al cpu
-          * 3 Pasa del CPU a bloqueado
-          * 4 pasa de bloqueado a listo
-          * 5 Proceso de cpu termina
-          */
-         int eventToProcess = -1;
-
-         double averageIoTime=0.0;//tiempo de bloquedo promedio(IO)
-
-         int inIO=0;//numero de veces que llegan procesos a bloqueado
-
-         int inCpu=0;//numero de veces que se ejecutan los procesos
-
-         double turnAround=0.0;
-
-
-         CompleteProcess cpuP(baseProcesses[0]);//representa al proceso que esta actualmente ejecutandose
-
-
          cpuP.setPid(-1);//no hay nada en la cpu
 
 
@@ -98,8 +51,8 @@ class FCFS: public BaseAlgorithm
 
          while(connected and
                (processIndex < numOfProcesses
-                or not(priorityQueue.is_empty())
-                or not(fifoQueue.is_empty())
+                or not(blockingQueue->is_empty())
+                or not(readyQueue->is_empty())
                 or  cpuP.getPid()!=-1))
          {
 
@@ -114,17 +67,17 @@ class FCFS: public BaseAlgorithm
             }
 #endif
 
-            if(not(fifoQueue.is_empty()) and cpuP.getPid()==-1)
+            if(not(readyQueue->is_empty()) and cpuP.getPid()==-1)
             {
                eventToProcess=5;
                eventToProcessTime=0;
             }
             else
             {
-               if(not priorityQueue.is_empty())
+               if(not blockingQueue->is_empty())
                {
                   eventToProcess=4;
-                  eventToProcessTime=priorityQueue.watch().getBlockingTime();
+                  eventToProcessTime=blockingQueue->watch().getBlockingTime();
                }
 
                if((cpuP.getPid()!=-1 and ((cpuP.getCpuBurstTime() )<=eventToProcessTime))or\
@@ -156,16 +109,16 @@ class FCFS: public BaseAlgorithm
             {//llega un proceso
                CompleteProcess tmp(baseProcesses[processIndex++]);
 
-               if(not fifoQueue.is_empty())
+               if(not readyQueue->is_empty())
                {
-                  fifoQueue.decrementTime(eventToProcessTime);
+                  readyQueue->decrementTime(eventToProcessTime);
                }
 
-               fifoQueue.put(tmp);
+               readyQueue->put(tmp);
 
-               if(not priorityQueue.is_empty())
+               if(not blockingQueue->is_empty())
                {
-                  priorityQueue.decrementTime(eventToProcessTime, true);
+                  blockingQueue->decrementTime(eventToProcessTime, true);
                }
 
                if(cpuP.getPid()!=-1)
@@ -178,19 +131,19 @@ class FCFS: public BaseAlgorithm
 
 
                simulationTime += eventToProcessTime;
-               writeEventInfo(simulationTime, eventToProcess, fifoQueue.watch(), _ss);
+               writeEventInfo(simulationTime, eventToProcess, readyQueue->watch(), _ss);
             }
 
             else if(eventToProcess==2)
             {//proceso termina
-               if(not fifoQueue.is_empty())
+               if(not readyQueue->is_empty())
                {
-                  fifoQueue.decrementTime(eventToProcessTime);
+                  readyQueue->decrementTime(eventToProcessTime);
                }
 
-               if(not priorityQueue.is_empty())
+               if(not blockingQueue->is_empty())
                {
-                  priorityQueue.decrementTime(eventToProcessTime,true);
+                  blockingQueue->decrementTime(eventToProcessTime,true);
                }
 
                cpuP.setRemainingTime(0.0);
@@ -227,16 +180,16 @@ class FCFS: public BaseAlgorithm
                cpuP.setNB(cpuP.getNB()+1);
                cpuP.setAverageIoTime(cpuP.getAverageIoTime()+cpuP.getBlockingTime());
 
-               if(not priorityQueue.is_empty())
+               if(not blockingQueue->is_empty())
                {
-                  priorityQueue.decrementTime(eventToProcessTime,true);
+                  blockingQueue->decrementTime(eventToProcessTime,true);
                }
 
-               priorityQueue.put(cpuP);
+               blockingQueue->put(cpuP);
 
-               if(not fifoQueue.is_empty())
+               if(not readyQueue->is_empty())
                {
-                  fifoQueue.decrementTime(eventToProcessTime);
+                  readyQueue->decrementTime(eventToProcessTime);
                }
 
                simulationTime += eventToProcessTime;//avanza el tiempo de simulacion
@@ -248,17 +201,17 @@ class FCFS: public BaseAlgorithm
             else if(eventToProcess==4)
             {//bloqueado a listo
                CompleteProcess tmp;
-               if(not priorityQueue.is_empty())
+               if(not blockingQueue->is_empty())
                {
-                  priorityQueue.decrementTime(eventToProcessTime, true);
-                  tmp = priorityQueue.get();
+                  blockingQueue->decrementTime(eventToProcessTime, true);
+                  tmp = blockingQueue->get();
                   tmp.setCpuBurstTime(0.0);
-                  if(not fifoQueue.is_empty())
+                  if(not readyQueue->is_empty())
                   {
-                     fifoQueue.decrementTime(eventToProcessTime);
+                     readyQueue->decrementTime(eventToProcessTime);
                   }
 
-                  fifoQueue.put(tmp);
+                  readyQueue->put(tmp);
 
                }
 
@@ -278,7 +231,7 @@ class FCFS: public BaseAlgorithm
 
             else
             {
-               cpuP = fifoQueue.get();
+               cpuP = readyQueue->get();
                cpuP.setCpuBurstTime((double(int(dCpuBurstTime->getVal()*10.0+.5))/10.0));
 
                cpuP.setNRunsCPU(cpuP.getNRunsCPU() + 1);
@@ -371,6 +324,8 @@ class FCFS: public BaseAlgorithm
 
       ~FCFS()
       {
+         delete blockingQueue;
+         delete readyQueue;
       }
 
 };

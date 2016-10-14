@@ -9,7 +9,7 @@
 #define PRIORITYQUEUE_H
 
 #include"node.h"
-#include<iostream>
+#include<iqueue.h>
 
 
 /**
@@ -17,7 +17,7 @@
  * @brief Cola de prioridad
  */
 template <typename T,typename CompareLess,typename CompareGreaterOrEqual>
-class PriorityQueue
+class PriorityQueue : public IQueue <T>
 {
    private:
 
@@ -30,7 +30,7 @@ class PriorityQueue
       /**
        * Constructor por defecto
        */
-      PriorityQueue( ) : rear_ptr(NULL), num_nodes(0)
+      PriorityQueue() : rear_ptr(NULL), num_nodes(0)
       {
          /* empty */
       }
@@ -133,7 +133,7 @@ class PriorityQueue
        * si es true se aumentara el tiempo de espera y decrementara el tiempo de bloqueo
        */
 
-      void decrementTime(double time, bool b)
+      void decrementTime(double time, bool b = false)
       {
          Node<T> * current=rear_ptr;
          if(b)

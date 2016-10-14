@@ -10,20 +10,7 @@
 #ifndef RR_H
 #define RR_H
 
-#include<CompleteProcess.h>
-#include<fifoQueue.h>
-#include<priorityQueue.h>
-#include<distributions.h>
-#include<fstream>
-#include<iostream>
-#include<iomanip>
-#include<cfloat>
-#include<eventData.h>
-#include<vector>
-#include<finaltimes.h>
-#include<finalsocket.h>
 #include<basealgorithm.h>
-
 
 /**
  * @class RR
@@ -36,15 +23,6 @@ class RR:public BaseAlgorithm
 {
    private:
 
-      PriorityQueue<CompleteProcess,CmpLessB,CmpGreaterOrEqualB> priorityQueue;/**< Cola de procesos bloqueados*/
-
-      FifoQueue<CompleteProcess> readyQueue;/**< Cola de listo para ejecutarse*/
-
-
-
-
-      std::ofstream out;
-
       double quantum;
 
 
@@ -52,10 +30,18 @@ class RR:public BaseAlgorithm
    public:
 
       RR(BaseProcess * _baseProcesses,int _n,double _quantum,int _t):
-          BaseAlgorithm(_baseProcesses,_n,_t),
-          quantum(_quantum)
+         BaseAlgorithm(_baseProcesses,_n,_t),
+         quantum(_quantum)
 
       {
+         init();
+      }
+
+      void init()
+      {
+         blockingQueue = new PriorityQueue<CompleteProcess,CmpLessB,CmpGreaterOrEqualB>;
+         readyQueue = new FifoQueue<CompleteProcess>;
+
       }
 
       /**
@@ -66,46 +52,21 @@ class RR:public BaseAlgorithm
 
       void simulate(Distribution * dCpuBurstTime,Distribution * dBlockingTime,SharedSimulation & _ss)
       {
-         unsigned i=0;
-
-         size_t processIndex=0;///indica cual es el proximo proceso que llega
-
-         double simulationTime=0.0;///tiempo de simulacion
-
-         double eventToProcessTime=DBL_MAX;//tiempo de proceso que se va a ejecutar
-
-         double percentage=0.0;//porcejentaje de uso
-
-         double averageWaitingTime=0.0;//tiempo de espera promedio
-
-         double averageUsageTime=0.0;//tiempo de uso promedio
-
-         int eventToProcess=-1;//se usa para saber cual evento es el que debe procesarse primero,1 significa que llega un nuevo proceso,2 pasa un proceso de la cola de listo al cpu, 3 Pasa del CPU a bloqueado, 4 pasa de bloqueado a listo,5 Proceso de cpu termina
 
          double minimumUsedTime;
+
          bool equalMinimum=true;
 
          double maximumUsedTime;
+
          bool equalMaximum=true;
-         CompleteProcess cpuP(baseProcesses[0]);//representa al proceso que esta actualmente ejecutandose
-
-         double averageIoTime=0.0;//tiempo de bloquedo promedio(IO)
-
-         int inIO=0;//numero de veces que llegan procesos a bloqueado
-
-         int inCpu=0;//numero de veces que se ejecutan los procesos
-
-         double turnAround=0.0;
 
          cpuP.setPid(-1);//no hay nada en la cpu
 
-
-
-
          while(connected and
                (processIndex<numOfProcesses
-                or not(priorityQueue.is_empty())
-                or not(readyQueue.is_empty())
+                or not(blockingQueue->is_empty())
+                or not(readyQueue->is_empty())
                 or  cpuP.getPid()!=-1))
          {
 
@@ -120,7 +81,7 @@ class RR:public BaseAlgorithm
             }
 #endif
 
-            if(not(readyQueue.is_empty()) and cpuP.getPid()==-1)
+            if(not(readyQueue->is_empty()) and cpuP.getPid()==-1)
             {
                eventToProcess=5;
                eventToProcessTime=0;
@@ -128,10 +89,10 @@ class RR:public BaseAlgorithm
 
             else
             {
-               if(not priorityQueue.is_empty())
+               if(not blockingQueue->is_empty())
                {
                   eventToProcess=4;
-                  eventToProcessTime=priorityQueue.watch().getBlockingTime();
+                  eventToProcessTime=blockingQueue->watch().getBlockingTime();
                }
 
                if((cpuP.getPid()!=-1 ) and cpuP.getCpuBurstTime()<=cpuP.getQuantum())
@@ -178,14 +139,14 @@ class RR:public BaseAlgorithm
                CompleteProcess tmp(baseProcesses[processIndex++]);
                //                    tmp.setCpuBurstTime((double(int(dCpuBurstTime->getVal()*10.0+.5))/10.0));
                tmp.setCpuBurstTime(dCpuBurstTime->getVal());
-               if(not readyQueue.is_empty()){
-                  readyQueue.decrementTime(eventToProcessTime);
+               if(not readyQueue->is_empty()){
+                  readyQueue->decrementTime(eventToProcessTime);
                }
 
-               readyQueue.put(tmp);
+               readyQueue->put(tmp);
 
-               if(not priorityQueue.is_empty())
-                  priorityQueue.decrementTime(eventToProcessTime,true);
+               if(not blockingQueue->is_empty())
+                  blockingQueue->decrementTime(eventToProcessTime,true);
 
                if(cpuP.getPid()!=-1){
                   cpuP.setCpuBurstTime(cpuP.getCpuBurstTime()-eventToProcessTime);
@@ -207,24 +168,24 @@ class RR:public BaseAlgorithm
                cpuP.setRemainingTime(cpuP.getRemainingTime()-eventToProcessTime);
                cpuP.setAverageUsageTime(cpuP.getAverageUsageTime()+eventToProcessTime);
 
-               if(not readyQueue.is_empty())
-                  readyQueue.decrementTime(eventToProcessTime);
+               if(not readyQueue->is_empty())
+                  readyQueue->decrementTime(eventToProcessTime);
 
-               if(not priorityQueue.is_empty())
-                  priorityQueue.decrementTime(eventToProcessTime,true);
+               if(not blockingQueue->is_empty())
+                  blockingQueue->decrementTime(eventToProcessTime,true);
 
-               readyQueue.put(cpuP);
+               readyQueue->put(cpuP);
                simulationTime += eventToProcessTime;
                writeEventInfo(simulationTime, eventToProcess,cpuP,_ss);
                cpuP.setPid(-1);
             }
             else if(eventToProcess==2)
             {//proceso termina
-               if(not readyQueue.is_empty())
-                  readyQueue.decrementTime(eventToProcessTime);
+               if(not readyQueue->is_empty())
+                  readyQueue->decrementTime(eventToProcessTime);
 
-               if(not priorityQueue.is_empty())
-                  priorityQueue.decrementTime(eventToProcessTime,true);
+               if(not blockingQueue->is_empty())
+                  blockingQueue->decrementTime(eventToProcessTime,true);
 
                cpuP.setRemainingTime(0.0);
                cpuP.setCpuBurstTime(0.0);
@@ -277,13 +238,13 @@ class RR:public BaseAlgorithm
                cpuP.setNB(cpuP.getNB()+1);
                cpuP.setAverageIoTime(cpuP.getAverageIoTime()+cpuP.getBlockingTime());
 
-               if(not priorityQueue.is_empty())
-                  priorityQueue.decrementTime(eventToProcessTime,true);
+               if(not blockingQueue->is_empty())
+                  blockingQueue->decrementTime(eventToProcessTime,true);
 
-               priorityQueue.put(cpuP);
+               blockingQueue->put(cpuP);
 
-               if(not readyQueue.is_empty())
-                  readyQueue.decrementTime(eventToProcessTime);
+               if(not readyQueue->is_empty())
+                  readyQueue->decrementTime(eventToProcessTime);
 
                simulationTime+=eventToProcessTime;//avanza el tiempo de simulacion
 
@@ -294,17 +255,17 @@ class RR:public BaseAlgorithm
             else if(eventToProcess==4)
             {//bloqueado a listo
                CompleteProcess tmp;
-               if(not priorityQueue.is_empty())
+               if(not blockingQueue->is_empty())
                {
-                  priorityQueue.decrementTime(eventToProcessTime,true);
-                  tmp=priorityQueue.get();
+                  blockingQueue->decrementTime(eventToProcessTime,true);
+                  tmp=blockingQueue->get();
                   tmp.setCpuBurstTime(0.0);
-                  if(not readyQueue.is_empty())
-                     readyQueue.decrementTime(eventToProcessTime);
+                  if(not readyQueue->is_empty())
+                     readyQueue->decrementTime(eventToProcessTime);
 
                   tmp.setCpuBurstTime(dCpuBurstTime->getVal());
                   //tmp.setCpuBurstTime((double(int(dCpuBurstTime->getVal()*10.0+.5))/10.0));
-                  readyQueue.put(tmp);
+                  readyQueue->put(tmp);
 
                }
 
@@ -324,7 +285,7 @@ class RR:public BaseAlgorithm
 
             else
             {
-               cpuP=readyQueue.get();
+               cpuP=readyQueue->get();
                //cpuP.setCpuBurstTime((double(int(dCpuBurstTime->getVal()*10.0+.5))/10.0));
                if(cpuP.getQuantum() == 0)
                {
@@ -420,7 +381,8 @@ class RR:public BaseAlgorithm
 
       ~RR()
       {
-         out.close();
+         delete blockingQueue;
+         delete readyQueue;
       }
 
 };
