@@ -23,6 +23,7 @@ class SJF : public BaseAlgorithm{
 
    public:
 
+
       SJF( const BaseProcess * _baseProcesses,const int _n, const int _t): BaseAlgorithm(_baseProcesses,_n,_t)
       {
          init();
@@ -34,17 +35,11 @@ class SJF : public BaseAlgorithm{
          readyQueue = new PriorityQueue<CompleteProcess,CmpLessR,CmpGreaterOrEqualR>;
       }
 
-
-
-
-
-
       /**
        * Hace la simulacion del algoritmo
        * @param dCpuBurstTime distribucion asociada al tiempo de rafaga
        * @param dCpuBlockingTime distribucion asociada al tiempo de bloqueo
        */
-
       void simulate(Distribution * dCpuBurstTime,Distribution * dBlockingTime,SharedSimulation & _ss)
       {
          double minimumUsedTime;

@@ -1,13 +1,13 @@
-#include <simulator.h>
+#include"../include/simulator.h"
 #include<iostream>
-#include<eventData.h>
-#include<fcfs.h>
-#include<sjf.h>
-#include<psjf.h>
-#include<rr.h>
-#include<processGenerator.h>
-#include<DataSocket1.h>
-#include<multSimData.h>
+#include"../include/eventData.h"
+#include"../include/fcfs.h"
+#include"../include/sjf.h"
+#include"../include/psjf.h"
+#include"../include/rr.h"
+#include"../include/processGenerator.h"
+#include"../include/DataSocket1.h"
+#include"../include/multSimData.h"
 /**
  * This will handle connection for each client
  * */
@@ -69,7 +69,7 @@ void * mulAlgorithmFunct(void * _n)
    //        if(sS.maxTimes[i].averageUsedTime>max.averageUsedTime)
    //            max.averageUsedTime=sS.maxTimes[i].averageUsedTime;
 
-   //        if(sS.maxTimes[i].averageWaitingTime>max.averageWaitingTime)
+   //        if(sS.maxTimes[i].averageWaitingTime"max.averageWaitingTime)
    //            max.averageWaitingTime=sS.maxTimes[i].averageWaitingTime;
 
    //        if(sS.maxTimes[i].turnAround<max.turnAround)
@@ -183,7 +183,7 @@ void * connection_handler(void *socket_desc)
       sS.n = dataSocket1.n;
       sS.t = t;
 
-      if( pthread_create( &multipleAlgorithm, NULL ,  (void*)&mulAlgorithmFunct , (void*) &tPM) < 0)
+      if( pthread_create( &multipleAlgorithm, NULL ,  mulAlgorithmFunct , (void*) &tPM) < 0)
       {
          perror("could not create thread");
          return NULL;
@@ -191,6 +191,7 @@ void * connection_handler(void *socket_desc)
       return NULL;
 
    }
+
 
 
    if(sS.nn > 0)
@@ -433,7 +434,7 @@ void Simulator::simulate(int _s)
 
       tamNombreRemoto = sizeof(struct sockaddr_in);
       //atiende un cliente por un nuevo socket
-      if ( ( t = accept(s, (void  *)&nombreRemoto, (socklen_t *)&tamNombreRemoto)) < 0)
+      if ( ( t = accept(s, &nombreRemoto, (socklen_t *)&tamNombreRemoto)) < 0)
       {
          perror("en el accept");
          printf(" t = %d \n", t );
@@ -442,7 +443,7 @@ void Simulator::simulate(int _s)
       }
 
 
-      if( pthread_create( &sThread, NULL ,  (void*)&connection_handler , (void*) &t) < 0)
+      if( pthread_create( &sThread, NULL ,  connection_handler , (void*) &t) < 0)
       {
          perror("could not create thread");
          return;

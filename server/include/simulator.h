@@ -54,7 +54,7 @@ class Simulator
 
       struct sockaddr_in nombreLocal;
 
-      struct sockaddr_in nombreRemoto;
+      struct sockaddr nombreRemoto;
 
 
    public:

@@ -54,6 +54,10 @@ public:
      */
     virtual void decrementTime(double time,bool b = false) = 0;
 
+      /**
+       * It is destroyer.
+       * @brief Destroyer.
+       */
     virtual ~IQueue(){}
 
 };
