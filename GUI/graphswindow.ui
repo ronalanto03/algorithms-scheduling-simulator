@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>GraphsWindow</class>
+ <widget class="QMainWindow" name="GraphsWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>766</width>
+    <height>540</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>766</width>
+    <height>540</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>766</width>
+    <height>540</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>GraphsWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="labelImage">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>90</y>
+      <width>501</width>
+      <height>361</height>
+     </rect>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="margin">
+     <number>0</number>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pButtonSave">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>40</y>
+      <width>98</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Save as..</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pButtonClose">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>90</y>
+      <width>98</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Close</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="cBoxAlgorithm">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>480</y>
+      <width>171</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string/>
+    </property>
+    <item>
+     <property name="text">
+      <string>Waiting</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>CPU Usage</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Turnaround</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="labelMax">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>140</y>
+      <width>221</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <italic>true</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Max. Time: </string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelMin">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>180</y>
+      <width>221</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <italic>true</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Min. time :</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelSD">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>220</y>
+      <width>231</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <italic>true</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Standard Desviation:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>-140</x>
+      <y>0</y>
+      <width>911</width>
+      <height>541</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="images.qrc">:/images/images/wall.jpg</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelAvg">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>260</y>
+      <width>231</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <italic>true</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Average Time:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelTitle">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>30</y>
+      <width>321</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>13</pointsize>
+      <weight>75</weight>
+      <italic>true</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelSimTime">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>300</y>
+      <width>231</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <italic>true</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Simulation Time:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelCpuUt">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>340</y>
+      <width>231</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <italic>true</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Cpu Utilization:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelThrogh">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>380</y>
+      <width>231</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <italic>true</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>throughput:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelCpuEntries">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>420</y>
+      <width>231</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <italic>true</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Cpu Entries:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelIOEntries">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>460</y>
+      <width>231</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <italic>true</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>I/O Entries:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelIOavgTime">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>500</y>
+      <width>231</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <italic>true</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>I/O Avg. Time:</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="cBoxAxis">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>480</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>X-axis : PID</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>X-Axis: finish time</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QPushButton" name="pButtonPt">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>480</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Processes Table</string>
+    </property>
+   </widget>
+   <zorder>label</zorder>
+   <zorder>labelImage</zorder>
+   <zorder>pButtonSave</zorder>
+   <zorder>pButtonClose</zorder>
+   <zorder>cBoxAlgorithm</zorder>
+   <zorder>labelMax</zorder>
+   <zorder>labelMin</zorder>
+   <zorder>labelSD</zorder>
+   <zorder>labelAvg</zorder>
+   <zorder>labelTitle</zorder>
+   <zorder>labelSimTime</zorder>
+   <zorder>labelCpuUt</zorder>
+   <zorder>labelThrogh</zorder>
+   <zorder>labelCpuEntries</zorder>
+   <zorder>labelIOEntries</zorder>
+   <zorder>labelIOavgTime</zorder>
+   <zorder>cBoxAxis</zorder>
+   <zorder>pButtonPt</zorder>
+  </widget>
+ </widget>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>pButtonClose</sender>
+   <signal>released()</signal>
+   <receiver>GraphsWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>710</x>
+     <y>125</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>702</x>
+     <y>182</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

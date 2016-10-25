@@ -155,6 +155,13 @@ void * connection_handler(void *socket_desc)
    std::cout<<"N: "<<dataSocket1.n<<std::endl<<std::endl;
 
 
+   if(dataSocket1.algorithm==-1)
+   {
+      std::cout<<"Terminating the server\n";
+      close(__ss);
+      return NULL;
+   }
+
    //    if(dataSocket1.algorithm==1){
    sS.results[0]=new FinalTimes[dataSocket1.n];
    //    }
@@ -170,11 +177,7 @@ void * connection_handler(void *socket_desc)
    sS.results[3]=new FinalTimes[dataSocket1.n];
 
 
-   if(dataSocket1.algorithm==-1)
-   {
-      close(__ss);
-      exit(1);
-   }
+
 
    if(dataSocket1.algorithm >= 5)
    {

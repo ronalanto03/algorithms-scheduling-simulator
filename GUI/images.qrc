@@ -1,0 +1,30 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>images/ask.png</file>
+        <file>images/box.png</file>
+        <file>images/check.png</file>
+        <file>images/gear.png</file>
+        <file>images/gear2.png</file>
+        <file>images/gear3.png</file>
+        <file>images/gear4.png</file>
+        <file>images/input.png</file>
+        <file>images/loadingbar.gif</file>
+        <file>images/plusBlue.png</file>
+        <file>images/plusGreen.png</file>
+        <file>images/plusOrange.png</file>
+        <file>images/processBlue.png</file>
+        <file>images/processGray.png</file>
+        <file>images/processGreen.png</file>
+        <file>images/processOrange.png</file>
+        <file>images/running.png</file>
+        <file>images/stop.png</file>
+        <file>images/wall.jpg</file>
+        <file>images/exitBox.png</file>
+        <file>images/clock.png</file>
+        <file>images/FirstComeFirstServe.png</file>
+        <file>images/Pre.ShortestJobFirst.png</file>
+        <file>images/RoundRobin.png</file>
+        <file>images/ShortestJobFirst.png</file>
+        <file>images/finished.png</file>
+    </qresource>
+</RCC>

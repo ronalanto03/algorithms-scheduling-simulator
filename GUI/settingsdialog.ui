@@ -1,0 +1,667 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SettingsDialog</class>
+ <widget class="QDialog" name="SettingsDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>516</width>
+    <height>409</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>516</width>
+    <height>409</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>516</width>
+    <height>409</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Simulation Settings</string>
+  </property>
+  <widget class="QLabel" name="labelPid">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>50</y>
+     <width>71</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Algorighm</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTD">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>170</y>
+     <width>141</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Arrival time Dist.</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTR">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>250</y>
+     <width>141</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>CPU burst time Dist.</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTE">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>290</y>
+     <width>131</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Blocking time Dist.</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTitulo">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>10</y>
+     <width>171</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>13</pointsize>
+     <weight>75</weight>
+     <italic>true</italic>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Simulation Settings</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTU">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>210</y>
+     <width>131</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Duration time Dist.</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTLl">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>130</y>
+     <width>141</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Number of processes</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pButtonSave">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>350</y>
+     <width>98</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::StrongFocus</enum>
+   </property>
+   <property name="text">
+    <string>Save</string>
+   </property>
+   <property name="autoDefault">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="sBoxNum">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>130</y>
+     <width>71</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>1</number>
+   </property>
+   <property name="maximum">
+    <number>10000000</number>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="cBoxAlgorithm">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>50</y>
+     <width>181</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="toolTip">
+    <string/>
+   </property>
+   <item>
+    <property name="text">
+     <string>First Come First Serve</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Shortest Job First</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Pre.Shortest Job First</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Round Robin</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="cBoxArrTime">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>170</y>
+     <width>141</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::StrongFocus</enum>
+   </property>
+   <item>
+    <property name="text">
+     <string>Constant</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Uniform</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Exponential</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Normal</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="cBoxDuration">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>210</y>
+     <width>141</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::StrongFocus</enum>
+   </property>
+   <item>
+    <property name="text">
+     <string>Constant</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Uniform</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Exponential</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Normal</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="cBoxBurstTime">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>250</y>
+     <width>141</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::StrongFocus</enum>
+   </property>
+   <item>
+    <property name="text">
+     <string>Constant</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Uniform</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Exponential</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Normal</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QComboBox" name="cBoxBlockTime">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>290</y>
+     <width>141</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::StrongFocus</enum>
+   </property>
+   <item>
+    <property name="text">
+     <string>Constant</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Uniform</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Exponential</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Normal</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="labelTD_2">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>170</y>
+     <width>21</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>to</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTD_3">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>210</y>
+     <width>21</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>to</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTD_4">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>250</y>
+     <width>21</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>to</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTD_5">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>290</y>
+     <width>21</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>to</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelQuantum">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>90</y>
+     <width>141</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Quantum</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="sBoxQuantum">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>90</y>
+     <width>71</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>1</number>
+   </property>
+   <property name="maximum">
+    <number>10000000</number>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pButtonCancel">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>350</y>
+     <width>98</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Cancel</string>
+   </property>
+   <property name="autoDefault">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>-140</x>
+     <y>0</y>
+     <width>671</width>
+     <height>411</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="images.qrc">:/images/images/wall.jpg</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QDoubleSpinBox" name="sBoxArrTimeL">
+   <property name="geometry">
+    <rect>
+     <x>331</x>
+     <y>170</y>
+     <width>71</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <double>1.000000000000000</double>
+   </property>
+   <property name="maximum">
+    <double>1000000.000000000000000</double>
+   </property>
+  </widget>
+  <widget class="QDoubleSpinBox" name="sBoxArrTimeR">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>431</x>
+     <y>170</y>
+     <width>71</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <double>1.000000000000000</double>
+   </property>
+   <property name="maximum">
+    <double>1000000.000000000000000</double>
+   </property>
+  </widget>
+  <widget class="QDoubleSpinBox" name="sBoxDurTimeL">
+   <property name="geometry">
+    <rect>
+     <x>331</x>
+     <y>210</y>
+     <width>71</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <double>1.000000000000000</double>
+   </property>
+   <property name="maximum">
+    <double>1000000.000000000000000</double>
+   </property>
+  </widget>
+  <widget class="QDoubleSpinBox" name="sBoxDurTimeR">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>431</x>
+     <y>210</y>
+     <width>71</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <double>1.000000000000000</double>
+   </property>
+   <property name="maximum">
+    <double>1000000.000000000000000</double>
+   </property>
+  </widget>
+  <widget class="QDoubleSpinBox" name="sBoxBurstTimeL">
+   <property name="geometry">
+    <rect>
+     <x>331</x>
+     <y>250</y>
+     <width>71</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <double>1.000000000000000</double>
+   </property>
+   <property name="maximum">
+    <double>1000000.000000000000000</double>
+   </property>
+  </widget>
+  <widget class="QDoubleSpinBox" name="sBoxBurstTimeR">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>431</x>
+     <y>250</y>
+     <width>71</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <double>1.000000000000000</double>
+   </property>
+   <property name="maximum">
+    <double>1000000.000000000000000</double>
+   </property>
+  </widget>
+  <widget class="QDoubleSpinBox" name="sBoxBlockTimeL">
+   <property name="geometry">
+    <rect>
+     <x>331</x>
+     <y>290</y>
+     <width>71</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <double>1.000000000000000</double>
+   </property>
+   <property name="maximum">
+    <double>1000000.000000000000000</double>
+   </property>
+  </widget>
+  <widget class="QDoubleSpinBox" name="sBoxBlockTimeR">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>431</x>
+     <y>290</y>
+     <width>71</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <double>1.000000000000000</double>
+   </property>
+   <property name="maximum">
+    <double>1000000.000000000000000</double>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>130</y>
+     <width>66</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Seed</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="sBoxSeed">
+   <property name="geometry">
+    <rect>
+     <x>330</x>
+     <y>130</y>
+     <width>60</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>1</number>
+   </property>
+   <property name="maximum">
+    <number>99999999</number>
+   </property>
+  </widget>
+  <zorder>label</zorder>
+  <zorder>labelPid</zorder>
+  <zorder>labelTD</zorder>
+  <zorder>labelTR</zorder>
+  <zorder>labelTE</zorder>
+  <zorder>labelTitulo</zorder>
+  <zorder>labelTU</zorder>
+  <zorder>labelTLl</zorder>
+  <zorder>pButtonSave</zorder>
+  <zorder>labelTD_2</zorder>
+  <zorder>labelTD_3</zorder>
+  <zorder>labelTD_4</zorder>
+  <zorder>labelTD_5</zorder>
+  <zorder>labelQuantum</zorder>
+  <zorder>pButtonCancel</zorder>
+  <zorder>cBoxAlgorithm</zorder>
+  <zorder>sBoxQuantum</zorder>
+  <zorder>sBoxNum</zorder>
+  <zorder>cBoxArrTime</zorder>
+  <zorder>cBoxDuration</zorder>
+  <zorder>cBoxBurstTime</zorder>
+  <zorder>cBoxBlockTime</zorder>
+  <zorder>sBoxArrTimeL</zorder>
+  <zorder>sBoxArrTimeR</zorder>
+  <zorder>sBoxDurTimeL</zorder>
+  <zorder>sBoxDurTimeR</zorder>
+  <zorder>sBoxBurstTimeL</zorder>
+  <zorder>sBoxBurstTimeR</zorder>
+  <zorder>sBoxBlockTimeL</zorder>
+  <zorder>sBoxBlockTimeR</zorder>
+  <zorder>label_2</zorder>
+  <zorder>sBoxSeed</zorder>
+ </widget>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
+ <connections/>
+</ui>

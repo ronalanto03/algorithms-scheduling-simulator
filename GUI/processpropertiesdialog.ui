@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>processPropertiesDialog</class>
+ <widget class="QDialog" name="processPropertiesDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>443</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>400</width>
+    <height>443</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>400</width>
+    <height>443</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Process Settings</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>:/images/processGray.png</normaloff>:/images/processGray.png</iconset>
+  </property>
+  <widget class="QLabel" name="labelTitulo">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>10</y>
+     <width>141</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>13</pointsize>
+     <weight>75</weight>
+     <italic>true</italic>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Process Settings</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelPid">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>60</y>
+     <width>66</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Pid</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTLl">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>90</y>
+     <width>131</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Arrived  Time</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTD">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>120</y>
+     <width>141</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Duration Time</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTU">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>150</y>
+     <width>121</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Used Time</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTE">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>210</y>
+     <width>131</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Waiting Time</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTR">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>180</y>
+     <width>111</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Remaining Time</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTRaf">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>240</y>
+     <width>121</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>CPU Burst Time</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTB">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>270</y>
+     <width>131</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Blocked Time</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lEditPId">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>60</y>
+     <width>113</width>
+     <height>27</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lEditArrTime">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>90</y>
+     <width>113</width>
+     <height>27</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lEditDuration">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>120</y>
+     <width>113</width>
+     <height>27</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lEditUsedTime">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>150</y>
+     <width>113</width>
+     <height>27</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lEditRemainingTime">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>180</y>
+     <width>113</width>
+     <height>27</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lEditWaitTime">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>210</y>
+     <width>113</width>
+     <height>27</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lEditBurstTime">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>240</y>
+     <width>113</width>
+     <height>27</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lEditBlockedTime">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>270</y>
+     <width>113</width>
+     <height>27</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>400</y>
+     <width>98</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Aceptar</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>-320</x>
+     <y>0</y>
+     <width>721</width>
+     <height>441</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="images.qrc">:/images/images/wall.jpg</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lEditNt">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>300</y>
+     <width>113</width>
+     <height>27</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lEditnB">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>330</y>
+     <width>113</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>200</width>
+     <height>330</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lEditallbt">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>360</y>
+     <width>113</width>
+     <height>27</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTB_2">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>300</y>
+     <width>131</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Cpu Entries</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTB_3">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>330</y>
+     <width>131</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>I/O Entries</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelTB_4">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>360</y>
+     <width>141</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Total Blocking Time</string>
+   </property>
+  </widget>
+  <zorder>label</zorder>
+  <zorder>labelTitulo</zorder>
+  <zorder>labelPid</zorder>
+  <zorder>labelTLl</zorder>
+  <zorder>labelTD</zorder>
+  <zorder>labelTU</zorder>
+  <zorder>labelTE</zorder>
+  <zorder>labelTR</zorder>
+  <zorder>labelTRaf</zorder>
+  <zorder>labelTB</zorder>
+  <zorder>lEditPId</zorder>
+  <zorder>lEditArrTime</zorder>
+  <zorder>lEditDuration</zorder>
+  <zorder>lEditUsedTime</zorder>
+  <zorder>lEditRemainingTime</zorder>
+  <zorder>lEditWaitTime</zorder>
+  <zorder>lEditBurstTime</zorder>
+  <zorder>lEditBlockedTime</zorder>
+  <zorder>pushButton</zorder>
+  <zorder>lEditNt</zorder>
+  <zorder>lEditnB</zorder>
+  <zorder>lEditallbt</zorder>
+  <zorder>labelTB_2</zorder>
+  <zorder>labelTB_3</zorder>
+  <zorder>labelTB_4</zorder>
+ </widget>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>pressed()</signal>
+   <receiver>processPropertiesDialog</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>221</x>
+     <y>394</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>334</x>
+     <y>383</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

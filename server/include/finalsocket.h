@@ -11,13 +11,11 @@
 #include<finaltimes.h>
 
 
-#include "finaltimes.h"
-
-
 
 /**
  * @struct FinalSocket
  * @brief Almacena los datos resultados obtenidos de una simulacion */
+#ifndef DATASOCKET1_H
 
 struct FinalSocket{
 
@@ -62,7 +60,7 @@ struct FinalSocket{
 
 };
 
-
+#endif
 
 
 

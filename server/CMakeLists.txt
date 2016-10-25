@@ -9,11 +9,11 @@
 
 cmake_minimum_required(VERSION 3.5)
 
-project (server)
+#project (server)
 
 add_definitions(-std=c++11)
 
-set(ExecutableName Simulator)
+
 set(libSrc
    CMakeLists.txt
         include/basealgorithm.h
@@ -44,15 +44,15 @@ set(libSrc
         src/finaltimes.cpp
         src/processGenerator.cpp
         src/simulator.cpp
-        src/test.cpp
+    #    src/test.cpp
    )
 
-add_executable(${ExecutableName} ${libSrc} )
+#add_executable(${ExecutableName} ${libSrc} )
 
 #remarks: pthread exists on linux only
-target_link_libraries(${ExecutableName} pthread)
+#target_link_libraries(${ExecutableName} pthread)
 
 #This file contains all header files
 include_directories(include)
-
+add_library(ser STATIC ${libSrc})
 
